@@ -33,6 +33,10 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
+    "@babel/runtime": "^7.19.4",
+    "@ethersproject/experimental": "^5.7.0",
+    "@glif/filecoin-address": "^2.0.1",
+    "@glif/filecoin-rpc-client": "^2.0.8",
     "@uniswap/v3-core": "^1.0.1",
     "@uniswap/v3-periphery": "^1.4.1"
   }
