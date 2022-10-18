@@ -4,6 +4,14 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
+import {
+  abi as SWAP_ROUTER_ABI,
+  bytecode as SWAP_ROUTER_BYTECODE,
+} from '@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
+import {
+  abi as FACTORY_ABI,
+  bytecode as FACTORY_BYTECODE,
+} from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
