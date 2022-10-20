@@ -20,10 +20,6 @@ import {
   bytecode as FACTORY_BYTECODE,
 } from "@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json";
 
-import util from "util";
-// eslint-disable-next-line node/no-extraneous-require
-const request = util.promisify(require("request"));
-
 require("dotenv").config();
 
 // import { HttpNetworkConfig } from "hardhat/types";
@@ -38,25 +34,6 @@ function hexToBytes(str: string): Uint8Array {
     a.push(parseInt(str.substr(i, 2), 16));
   }
   return new Uint8Array(a);
-}
-
-async function callRpc(method: any, params?: any): Promise<any> {
-  const options = {
-    method: "POST",
-    url: "https://wallaby.node.glif.io/rpc/v0",
-    // url: "http://localhost:1234/rpc/v0",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      jsonrpc: "2.0",
-      method: method,
-      params: params,
-      id: 1,
-    }),
-  };
-  const res = await request(options);
-  return JSON.parse(res.body).result;
 }
 
 const filRpc = new RpcEngine({
@@ -88,12 +65,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   console.log("nonce:", nonce);
   console.log("Send faucet funds to this address (f1):", f1addr);
-
-  let actorId = await callRpc("Filecoin.StateLookupID", [f1addr, []]);
-  actorId = Number(actorId.slice(1)).toString(16);
-  const f0addr = "0xff" + "0".repeat(38 - actorId.length) + actorId;
-
-  console.log("Ethereum deployer address (from f0):", f0addr);
   console.log("priorityFee: ", priorityFee);
 
   const router = await deploy("Swap Router", {
