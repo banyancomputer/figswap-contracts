@@ -9,6 +9,7 @@ import { ethers } from "hardhat";
 import { newSecp256k1Address } from "@glif/filecoin-address";
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
+import RpcEngine from "@glif/filecoin-rpc-client";
 
 import {
   abi as SWAP_ROUTER_ABI,
@@ -58,6 +59,15 @@ async function callRpc(method: any, params?: any): Promise<any> {
   return JSON.parse(res.body).result;
 }
 
+const filRpc = new RpcEngine({
+  apiAddress: "https://wallaby.node.glif.io/rpc/v1",
+});
+const ethRpc = new RpcEngine({
+  apiAddress: "https://wallaby.node.glif.io/rpc/v1",
+  namespace: "eth",
+  delimeter: "_",
+});
+
 const deployer = new ethers.Wallet(process.env.PRIVATE_KEY!);
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
@@ -73,8 +83,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const pubKey = hexToBytes(deployer.publicKey.slice(2));
   const f1addr = newSecp256k1Address(pubKey).toString();
 
-  const priorityFee = await callRpc("eth_maxPriorityFeePerGas");
-  const nonce = await callRpc("Filecoin.MpoolGetNonce", [f1addr]);
+  const nonce = await filRpc.request("MpoolGetNonce", f1addr);
+  const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
   console.log("nonce:", nonce);
   console.log("Send faucet funds to this address (f1):", f1addr);
@@ -86,8 +96,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log("Ethereum deployer address (from f0):", f0addr);
   console.log("priorityFee: ", priorityFee);
 
-  await deploy("Swap Router", {
-    contract: {abi: SWAP_ROUTER_ABI, bytecode: SWAP_ROUTER_BYTECODE},
+  const router = await deploy("Swap Router", {
+    contract: { abi: SWAP_ROUTER_ABI, bytecode: SWAP_ROUTER_BYTECODE },
     from: deployer.address,
     args: [],
     // since it's difficult to estimate the gas before f4 address is launched, it's safer to manually set
@@ -100,8 +110,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
   });
 
-  await deploy("Factor", {
-    contract: {abi: FACTORY_ABI, bytecode: SWAP_ROUTER_BYTECODE},
+  const factory = await deploy("Factory", {
+    contract: { abi: FACTORY_ABI, bytecode: FACTORY_BYTECODE },
     from: deployer.address,
     args: [],
     // since it's difficult to estimate the gas before f4 address is launched, it's safer to manually set
@@ -113,6 +123,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     nonce: nonce,
     log: true,
   });
+
+  console.log(
+    `Router address:` + router.address + `Factory address:` + factory.address
+  );
   /*
   const Periphery = await ethers.getContractFactory(
     SWAP_ROUTER_ABI,
