@@ -47,9 +47,10 @@ const ethRpc = new RpcEngine({
 
 const deployer = new ethers.Wallet(process.env.PRIVATE_KEY!);
 
-const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployments } = hre;
-  const { deploy } = deployments;
+module.exports = async (hre: any) => {
+  const deploy = hre.deployments.deploy;
+
+  try {
   // Hardhat always runs the compile task when running scripts with its command
   // line interface.
   //
@@ -98,6 +99,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(
     `Router address:` + router.address + `Factory address:` + factory.address
   );
+  }
+  catch (err) {
+  const msg = err instanceof Error ? err.message : JSON.stringify(err);
+  console.error(`Error when deploying contract: ${msg}`);
+}
   /*
   const Periphery = await ethers.getContractFactory(
     SWAP_ROUTER_ABI,
@@ -121,6 +127,3 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-export default func;
-
-func.tags = ["Token"];
