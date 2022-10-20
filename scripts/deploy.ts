@@ -3,7 +3,13 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
+import "hardhat-deploy";
+import "hardhat-deploy-ethers";
 import { ethers } from "hardhat";
+import { newSecp256k1Address } from "@glif/filecoin-address";
+import { DeployFunction } from "hardhat-deploy/types";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
+
 import {
   abi as SWAP_ROUTER_ABI,
   bytecode as SWAP_ROUTER_BYTECODE,
@@ -12,34 +18,51 @@ import {
   abi as FACTORY_ABI,
   bytecode as FACTORY_BYTECODE,
 } from "@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json";
-import { NonceManager } from "@ethersproject/experimental";
 
-import RpcEngine from "@glif/filecoin-rpc-client";
-import { newSecp256k1Address } from "@glif/filecoin-address";
+import util from "util";
+// eslint-disable-next-line node/no-extraneous-require
+const request = util.promisify(require("request"));
 
 require("dotenv").config();
 
 // import { HttpNetworkConfig } from "hardhat/types";
 // import { FeeMarketEIP1559Transaction } from "@ethereumjs/tx";
 
-export const hexlify = (id: string) => {
-  const hexId = Number(id.slice(1)).toString(16);
-  return "0xff" + "0".repeat(38 - hexId.length) + hexId;
-};
+function hexToBytes(str: string): Uint8Array {
+  if (!str) {
+    return new Uint8Array();
+  }
+  const a = [];
+  for (let i = 0, len = str.length; i < len; i += 2) {
+    a.push(parseInt(str.substr(i, 2), 16));
+  }
+  return new Uint8Array(a);
+}
 
-export const deriveAddrsFromPk = async (pk: string, apiAddress: string) => {
-  const w = new ethers.Wallet(pk);
-  const pubKey = Uint8Array.from(Buffer.from(w.publicKey.slice(2), "hex"));
-  const secpActor = newSecp256k1Address(pubKey).toString();
-  const filRpc = new RpcEngine({ apiAddress });
+async function callRpc(method: any, params?: any): Promise<any> {
+  const options = {
+    method: "POST",
+    url: "https://wallaby.node.glif.io/rpc/v0",
+    // url: "http://localhost:1234/rpc/v0",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method: method,
+      params: params,
+      id: 1,
+    }),
+  };
+  const res = await request(options);
+  return JSON.parse(res.body).result;
+}
 
-  const idActor = await filRpc.request("StateLookupID", secpActor, null);
-  const idActorHex = hexlify(idActor);
+const deployer = new ethers.Wallet(process.env.PRIVATE_KEY!);
 
-  return { secpActor, idActor, idActorHex };
-};
-
-async function main() {
+const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+  const { deployments } = hre;
+  const { deploy } = deployments;
   // Hardhat always runs the compile task when running scripts with its command
   // line interface.
   //
@@ -47,42 +70,50 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  // We get the contract to deploy
-  // const [signer] = await ethers.getSigners();
+  const pubKey = hexToBytes(deployer.publicKey.slice(2));
+  const f1addr = newSecp256k1Address(pubKey).toString();
 
-  /*
-  const { secpActor } = await deriveAddrsFromPk(
-    process.env.PRIVATE_KEY!,
-    process.env.WALLABY_URL!
-  );
-  */
+  const priorityFee = await callRpc("eth_maxPriorityFeePerGas");
+  const nonce = await callRpc("Filecoin.MpoolGetNonce", [f1addr]);
 
-  /*
-  const ethRpc = new RpcEngine({
-    apiAddress: network.config.url,
-    namespace: "eth",
-    delimeter: "_",
+  console.log("nonce:", nonce);
+  console.log("Send faucet funds to this address (f1):", f1addr);
+
+  let actorId = await callRpc("Filecoin.StateLookupID", [f1addr, []]);
+  actorId = Number(actorId.slice(1)).toString(16);
+  const f0addr = "0xff" + "0".repeat(38 - actorId.length) + actorId;
+
+  console.log("Ethereum deployer address (from f0):", f0addr);
+  console.log("priorityFee: ", priorityFee);
+
+  await deploy("Swap Router", {
+    contract: {abi: SWAP_ROUTER_ABI, bytecode: SWAP_ROUTER_BYTECODE},
+    from: deployer.address,
+    args: [],
+    // since it's difficult to estimate the gas before f4 address is launched, it's safer to manually set
+    // a large gasLimit. This should be addressed in the following releases.
+    gasLimit: 1000000000, // BlockGasLimit / 10
+    // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+    // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+    maxPriorityFeePerGas: priorityFee,
+    nonce: nonce,
+    log: true,
   });
-  */
 
-  // const filRpc = new RpcEngine({ apiAddress: network.config.url });
-  const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-    process.env.WALLABY_URL!
-  );
-  const deployer = new ethers.Wallet(process.env.PRIVATE_KEY!, jsonRpcProvider);
-  const signer = new NonceManager(deployer);
-  const f1addr = await deriveAddrsFromPk(
-    process.env.PRIVATE_KEY!,
-    process.env.WALLABY_URL!
-  );
-
-  console.log(
-    "Your Ethereum(EVM) Address is " +
-      deployer.address +
-      " Your Filecoin Address is " +
-      f1addr
-  );
-
+  await deploy("Factor", {
+    contract: {abi: FACTORY_ABI, bytecode: SWAP_ROUTER_BYTECODE},
+    from: deployer.address,
+    args: [],
+    // since it's difficult to estimate the gas before f4 address is launched, it's safer to manually set
+    // a large gasLimit. This should be addressed in the following releases.
+    gasLimit: 1000000000, // BlockGasLimit / 10
+    // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+    // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+    maxPriorityFeePerGas: priorityFee,
+    nonce: nonce,
+    log: true,
+  });
+  /*
   const Periphery = await ethers.getContractFactory(
     SWAP_ROUTER_ABI,
     SWAP_ROUTER_BYTECODE,
@@ -100,14 +131,11 @@ async function main() {
 
   const periphery = await Periphery.deploy();
   await periphery.deployed();
-
-  console.log("Factory deployed to:", factory.address);
-  console.log("Periphery deployed to:", periphery.address);
-}
+  */
+};
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+export default func;
+
+func.tags = ["Token"];

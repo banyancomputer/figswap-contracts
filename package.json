@@ -38,6 +38,8 @@
     "@glif/filecoin-address": "^2.0.1",
     "@glif/filecoin-rpc-client": "^2.0.8",
     "@uniswap/v3-core": "^1.0.1",
-    "@uniswap/v3-periphery": "^1.4.1"
+    "@uniswap/v3-periphery": "^1.4.1",
+    "hardhat-deploy": "^0.11.18",
+    "hardhat-deploy-ethers": "^0.3.0-beta.13"
   }
 }
