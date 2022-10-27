@@ -1,7 +1,7 @@
 {
-  "name": "wfil",
+  "name": "figswap",
   "version": "0.0.0",
-  "description": "ERC20 implementation of the $FIL token",
+  "description": "swap figs",
   "main": "index.js",
   "directories": {
     "lib": "lib",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Schwartz10/wfil.git"
+    "url": "git+https://github.com/banyancomputer/figswap-contracts.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Schwartz10/wfil.git/issues"
+    "url": "https://github.com/banyancomputer/figswap-contracts/issues"
   },
-  "homepage": "https://github.com/Schwartz10/wfil.git#readme",
+  "homepage": "https://github.com/banyancomputer/figswap-contracts#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "hardhat": "^2.11.2",
