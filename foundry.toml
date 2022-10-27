@@ -10,4 +10,30 @@ remappings = [
   "src/=src/",
   "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/"
 ]
+
+[profile.tokens]
+src = 'tokens'
+out = 'out'
+libs = ['lib-tokens', 'lib']
+remappings = [
+  "ds-test/=lib/forge-std/lib/ds-test/src/",
+  "forge-std/=lib/forge-std/src/",
+  "@openzeppelin/=lib/openzeppelin-contracts/",
+  "solmate/=lib/solmate/src/",
+  "src/=src/",
+  "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/"
+]
+
+[profile.stable-staking]
+src = 'stable-staking'
+out = 'out'
+libs = ['lib-stable-staking', 'lib']
+remappings = [
+  "ds-test/=lib/forge-std/lib/ds-test/src/",
+  "forge-std/=lib/forge-std/src/",
+  "@openzeppelin/=lib/openzeppelin-contracts/",
+  "solmate/=lib/solmate/src/",
+  "src/=src/",
+  "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/"
+]
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
