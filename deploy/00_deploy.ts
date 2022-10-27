@@ -42,7 +42,20 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    console.log(address, newDelegatedEthAddress(address).toString());
+    await deploy("USDC", {
+      from: w.address,
+      args: [],
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
+
+    console.log(`wfil addr: ` + address, newDelegatedEthAddress(address).toString());
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
     console.error(`Error when deploying contract: ${msg}`);
