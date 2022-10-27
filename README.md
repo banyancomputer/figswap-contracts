@@ -13,8 +13,8 @@ Make sure you have installed:
 [Foundry](https://github.com/foundry-rs/foundry)<br />
 
 ```
-git clone git@github.com:Schwartz10/wfil.git
-cd wfil
+git clone https://github.com/banyancomputer/figswap-contracts
+cd figswap-contracts
 npm i
 ```
 
