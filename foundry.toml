@@ -14,14 +14,14 @@ remappings = [
 [profile.tokens]
 src = 'src-tokens'
 out = 'out'
-libs = ['lib-tokens', 'lib']
+libs = ['lib-tokens']
 remappings = [
 ]
 
 [profile.stable-staking]
 src = 'src-stable_staking'
 out = 'out'
-libs = ['lib-stable-staking', 'lib']
+libs = ['lib-stable-staking']
 remappings = [
 ]
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
