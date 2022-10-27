@@ -12,3 +12,5 @@
 [submodule "lib/openzeppelin-contracts"]
 	path = lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "/Users/xh/figswap-contracts/lib/openzeppelin-contracts"]
+	branch = release-v3.0.0
