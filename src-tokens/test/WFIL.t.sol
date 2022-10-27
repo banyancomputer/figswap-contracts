@@ -3,7 +3,7 @@ pragma solidity 0.8.15;
 
 import {SafeTransferLib} from "solmate/utils/SafeTransferLib.sol";
 import {DSInvariantTest} from "solmate/test/utils/DSInvariantTest.sol";
-import {WFIL} from "src/WFIL.sol";
+import {WFIL} from "src-tokens/WFIL.sol";
 import "forge-std/Test.sol";
 
 contract WETHTest is Test {

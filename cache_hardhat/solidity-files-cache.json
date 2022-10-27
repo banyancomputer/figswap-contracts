@@ -4568,6 +4568,644 @@
       "artifacts": [
         "WAVAX9Mock"
       ]
+    },
+    "/Users/xh/figswap-contracts/src-tokens/WFIL.sol": {
+      "lastModificationDate": 1666893748586,
+      "contentHash": "ade02f02aeebc71d5ed8950ff903d910",
+      "sourceName": "src-tokens/WFIL.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [
+        "lib-tokens/solmate/src/tokens/ERC20.sol",
+        "lib-tokens/solmate/src/utils/SafeTransferLib.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.15"
+      ],
+      "artifacts": [
+        "WFIL"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/solmate/src/utils/SafeTransferLib.sol": {
+      "lastModificationDate": 1666892561436,
+      "contentHash": "db5e8a3ee2df4fb8eb2d552a01753920",
+      "sourceName": "lib-tokens/solmate/src/utils/SafeTransferLib.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [
+        "../tokens/ERC20.sol"
+      ],
+      "versionPragmas": [
+        ">=0.8.0"
+      ],
+      "artifacts": [
+        "SafeTransferLib"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/solmate/src/tokens/ERC20.sol": {
+      "lastModificationDate": 1666892561435,
+      "contentHash": "0c7c7ada139062536af09d69d96d395c",
+      "sourceName": "lib-tokens/solmate/src/tokens/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.0"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "/Users/xh/figswap-contracts/src-tokens/test/WFIL.t.sol": {
+      "lastModificationDate": 1666893015737,
+      "contentHash": "a11a2d849229c02567042a69d595c95f",
+      "sourceName": "src-tokens/test/WFIL.t.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [
+        "lib-tokens/solmate/src/utils/SafeTransferLib.sol",
+        "lib-tokens/solmate/src/test/utils/DSInvariantTest.sol",
+        "src-tokens/WFIL.sol",
+        "lib-tokens/forge-std/src/Test.sol"
+      ],
+      "versionPragmas": [
+        "0.8.15"
+      ],
+      "artifacts": [
+        "WETHTest",
+        "WFILInvariants",
+        "WFILTester"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/forge-std/src/Test.sol": {
+      "lastModificationDate": 1666892989758,
+      "contentHash": "c395470ef1b32eb6a9dc3c81847ae9b3",
+      "sourceName": "lib-tokens/forge-std/src/Test.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Script.sol",
+        "lib-tokens/forge-std/lib/ds-test/src/test.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Test",
+        "stdError",
+        "stdMath",
+        "stdStorage"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/solmate/src/test/utils/DSInvariantTest.sol": {
+      "lastModificationDate": 1666892561434,
+      "contentHash": "eef63c069b48071868fdcbd7c8402136",
+      "sourceName": "lib-tokens/solmate/src/test/utils/DSInvariantTest.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.0"
+      ],
+      "artifacts": [
+        "DSInvariantTest"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/forge-std/src/Script.sol": {
+      "lastModificationDate": 1666892989758,
+      "contentHash": "571dde8775a6214a03d6772ee330ead5",
+      "sourceName": "lib-tokens/forge-std/src/Script.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [
+        "./console.sol",
+        "./console2.sol",
+        "./StdJson.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Script"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/forge-std/lib/ds-test/src/test.sol": {
+      "lastModificationDate": 1666892990229,
+      "contentHash": "962996f0e05d5218857a538a62d7c47e",
+      "sourceName": "lib-tokens/forge-std/lib/ds-test/src/test.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "DSTest"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/forge-std/src/StdJson.sol": {
+      "lastModificationDate": 1666892989758,
+      "contentHash": "75c782f20a301ab9827060a03da071e4",
+      "sourceName": "lib-tokens/forge-std/src/StdJson.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Vm.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.9.0"
+      ],
+      "artifacts": [
+        "stdJson"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/forge-std/src/console.sol": {
+      "lastModificationDate": 1666892989758,
+      "contentHash": "100b8a33b917da1147740d7ab8b0ded3",
+      "sourceName": "lib-tokens/forge-std/src/console.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/forge-std/src/console2.sol": {
+      "lastModificationDate": 1666892989759,
+      "contentHash": "5df91f8e93efbfcccf68973dc1b74a70",
+      "sourceName": "lib-tokens/forge-std/src/console2.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console2"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/forge-std/src/Vm.sol": {
+      "lastModificationDate": 1666892989758,
+      "contentHash": "bd4bde818b3c57b21e0601277b1d2dac",
+      "sourceName": "lib-tokens/forge-std/src/Vm.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Vm"
+      ]
+    },
+    "/Users/xh/figswap-contracts/src-tokens/USDC.sol": {
+      "lastModificationDate": 1666893799222,
+      "contentHash": "e3688afbadd6518ad7ed872e5a42bc46",
+      "sourceName": "src-tokens/USDC.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+            }
+          }
+        }
+      },
+      "imports": [
+        "lib-tokens/solmate/src/tokens/ERC20.sol",
+        "lib-tokens/solmate/src/utils/SafeTransferLib.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.15"
+      ],
+      "artifacts": [
+        "USDC"
+      ]
     }
   }
 }

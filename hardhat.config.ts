@@ -9,7 +9,7 @@ require("dotenv").config();
 
 function getRemappings() {
   return fs
-    .readFileSync("remappings.txt", "utf8")
+    .readFileSync("remappings-tokens.txt", "utf8")
     .split("\n")
     .filter(Boolean) // remove empty lines
     .map((line) => line.trim().split("="));
@@ -45,7 +45,7 @@ const config: HardhatUserConfig = {
     }),
   },
   paths: {
-    sources: "./src",
+    sources: "./src-tokens",
     cache: "./cache_hardhat",
   },
 };

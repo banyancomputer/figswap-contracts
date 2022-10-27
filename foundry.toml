@@ -8,13 +8,19 @@ remappings = [
   "@openzeppelin/=lib/openzeppelin-contracts/",
   "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/"
 ]
+solc_version = '0.6.12'
 
 [profile.tokens]
 src = 'src-tokens'
 out = 'out'
 libs = ['lib-tokens']
 remappings = [
+  "ds-test/=lib-tokens/forge-std/lib/ds-test/src/",
+  "forge-std/=lib-tokens/forge-std/src/",
+  "solmate/=lib-tokens/solmate/src/",
+  "src-tokens/=src-tokens/"
 ]
+solc_version = '0.8.15'
 
 [profile.stable-staking]
 src = 'src-stable_staking'
