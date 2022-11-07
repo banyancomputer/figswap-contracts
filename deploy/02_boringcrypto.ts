@@ -8,7 +8,6 @@ import { HttpNetworkConfig } from "hardhat/types";
 
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
-  const { dev } = await hre.getNamedAccounts();
 
   try {
     const config = hre.network.config as HttpNetworkConfig;
@@ -30,11 +29,9 @@ module.exports = async (hre: any) => {
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const joe = await ethers.getContractAt("JoeToken", w.address);
-
-    const { cliffAddress } = await deploy("Cliff", {
+    const { cryptoScannerAddr } = await deploy("BoringCryptoTokenScanner", {
         from: w.address,
-        args: [joe.address, dev, 0, 3],
+        args: [],
         // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
         // a large gasLimit. This should be addressed in the following releases.
         gasLimit: 1000000000, // BlockGasLimit / 10
@@ -45,7 +42,7 @@ module.exports = async (hre: any) => {
         log: true,
     });
 
-    console.log(`cliff contract addr: ` + cliffAddress, newDelegatedEthAddress(cliffAddress).toString());
+    console.log(`scanner contract addr: ` + cryptoScannerAddr, newDelegatedEthAddress(cryptoScannerAddr).toString());
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
