@@ -29,7 +29,7 @@ module.exports = async (hre: any) => {
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const { address } = await deploy("WFIL", {
+    const { wFILAddress } = await deploy("WFIL", {
       from: w.address,
       args: [],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -42,7 +42,7 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    await deploy("USDC", {
+    const { usdcAddress } = await deploy("USDC", {
       from: w.address,
       args: [],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -55,7 +55,22 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    console.log(`wfil addr: ` + address, newDelegatedEthAddress(address).toString());
+    const { joeAddress } = await deploy("JoeToken", {
+      from: w.address,
+      args: [],
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
+
+    console.log(`wfil addr: ` + wFILAddress, newDelegatedEthAddress(wFILAddress).toString());
+    console.log(`usdc addr ` + usdcAddress, newDelegatedEthAddress(usdcAddress).toString());
+    console.log(`joe addr ` + joeAddress, newDelegatedEthAddress(joeAddress).toString());
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
     console.error(`Error when deploying contract: ${msg}`);

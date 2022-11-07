@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.6.12;
+pragma solidity ^0.8.15;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20} from "solmate/tokens/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 // JoeToken with Governance.
-contract JoeToken is ERC20("JoeToken", "JOE"), Ownable {
+contract JoeToken is ERC20("JoeToken", "JOE", 18), Ownable {
     /// @notice Total number of tokens
     uint256 public maxSupply = 500_000_000e18; // 500 million Joe
 
     /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (MasterJoe).
     function mint(address _to, uint256 _amount) public onlyOwner {
-        require(totalSupply().add(_amount) <= maxSupply, "JOE::mint: cannot exceed max supply");
+        require(totalSupply + _amount <= maxSupply, "JOE::mint: cannot exceed max supply");
         _mint(_to, _amount);
         _moveDelegates(address(0), _delegates[_to], _amount);
     }
@@ -45,9 +45,6 @@ contract JoeToken is ERC20("JoeToken", "JOE"), Ownable {
     /// @notice The EIP-712 typehash for the delegation struct used by the contract
     bytes32 public constant DELEGATION_TYPEHASH =
         keccak256("Delegation(address delegatee,uint256 nonce,uint256 expiry)");
-
-    /// @notice A record of states for signing / validating signatures
-    mapping(address => uint256) public nonces;
 
     /// @notice An event thats emitted when an account changes its delegate
     event DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate);
@@ -89,7 +86,7 @@ contract JoeToken is ERC20("JoeToken", "JOE"), Ownable {
         bytes32 s
     ) external {
         bytes32 domainSeparator = keccak256(
-            abi.encode(DOMAIN_TYPEHASH, keccak256(bytes(name())), getChainId(), address(this))
+            abi.encode(DOMAIN_TYPEHASH, keccak256(bytes(name)), getChainId(), address(this))
         );
 
         bytes32 structHash = keccak256(abi.encode(DELEGATION_TYPEHASH, delegatee, nonce, expiry));
@@ -99,7 +96,7 @@ contract JoeToken is ERC20("JoeToken", "JOE"), Ownable {
         address signatory = ecrecover(digest, v, r, s);
         require(signatory != address(0), "JOE::delegateBySig: invalid signature");
         require(nonce == nonces[signatory]++, "JOE::delegateBySig: invalid nonce");
-        require(now <= expiry, "JOE::delegateBySig: signature expired");
+        require(block.timestamp <= expiry, "JOE::delegateBySig: signature expired");
         return _delegate(signatory, delegatee);
     }
 
@@ -156,7 +153,7 @@ contract JoeToken is ERC20("JoeToken", "JOE"), Ownable {
 
     function _delegate(address delegator, address delegatee) internal {
         address currentDelegate = _delegates[delegator];
-        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying JOEs (not scaled);
+        uint256 delegatorBalance = balanceOf[delegator]; // balance of underlying JOEs (not scaled);
         _delegates[delegator] = delegatee;
 
         emit DelegateChanged(delegator, currentDelegate, delegatee);
@@ -174,7 +171,7 @@ contract JoeToken is ERC20("JoeToken", "JOE"), Ownable {
                 // decrease old representative
                 uint32 srcRepNum = numCheckpoints[srcRep];
                 uint256 srcRepOld = srcRepNum > 0 ? checkpoints[srcRep][srcRepNum - 1].votes : 0;
-                uint256 srcRepNew = srcRepOld.sub(amount);
+                uint256 srcRepNew = srcRepOld - amount;
                 _writeCheckpoint(srcRep, srcRepNum, srcRepOld, srcRepNew);
             }
 
@@ -182,7 +179,7 @@ contract JoeToken is ERC20("JoeToken", "JOE"), Ownable {
                 // increase new representative
                 uint32 dstRepNum = numCheckpoints[dstRep];
                 uint256 dstRepOld = dstRepNum > 0 ? checkpoints[dstRep][dstRepNum - 1].votes : 0;
-                uint256 dstRepNew = dstRepOld.add(amount);
+                uint256 dstRepNew = dstRepOld + amount;
                 _writeCheckpoint(dstRep, dstRepNum, dstRepOld, dstRepNew);
             }
         }
@@ -211,7 +208,7 @@ contract JoeToken is ERC20("JoeToken", "JOE"), Ownable {
         return uint32(n);
     }
 
-    function getChainId() internal pure returns (uint256) {
+    function getChainId() internal view returns (uint256) {
         uint256 chainId;
         assembly {
             chainId := chainid()

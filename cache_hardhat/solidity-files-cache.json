@@ -3048,56 +3048,6 @@
         "MasterChefJoeV2"
       ]
     },
-    "/Users/xh/figswap-contracts/src/JoeToken.sol": {
-      "lastModificationDate": 1666887630582,
-      "contentHash": "0836f6c310c2972bf8669e890a084019",
-      "sourceName": "src/JoeToken.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {
-            "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383930343231393734"
-            }
-          }
-        }
-      },
-      "imports": [
-        "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
-        "lib/openzeppelin-contracts/contracts/access/Ownable.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "JoeToken"
-      ]
-    },
     "/Users/xh/figswap-contracts/src/libraries/BoringERC20.sol": {
       "lastModificationDate": 1666887502739,
       "contentHash": "0b8345be8b99716b94d2cb9adb87ea72",
@@ -4603,7 +4553,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -4653,7 +4603,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -4702,7 +4652,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -4749,7 +4699,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -4803,7 +4753,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -4856,7 +4806,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -4903,7 +4853,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -4954,7 +4904,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -5001,7 +4951,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -5050,7 +5000,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -5097,7 +5047,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -5144,7 +5094,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -5191,7 +5141,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363636383933383530373533"
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
             }
           }
         }
@@ -5205,6 +5155,152 @@
       ],
       "artifacts": [
         "USDC"
+      ]
+    },
+    "/Users/xh/figswap-contracts/src-tokens/JoeToken.sol": {
+      "lastModificationDate": 1667842352784,
+      "contentHash": "15ac2bcab4b30b9e591417165c87227e",
+      "sourceName": "src-tokens/JoeToken.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
+            }
+          }
+        }
+      },
+      "imports": [
+        "lib-tokens/solmate/src/tokens/ERC20.sol",
+        "lib-tokens/openzeppelin-contracts/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.15"
+      ],
+      "artifacts": [
+        "JoeToken"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/openzeppelin-contracts/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1667841964972,
+      "contentHash": "e436cea06129be2c73cda4b1acc848b5",
+      "sourceName": "lib-tokens/openzeppelin-contracts/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
+    "/Users/xh/figswap-contracts/lib-tokens/openzeppelin-contracts/contracts/utils/Context.sol": {
+      "lastModificationDate": 1667841965000,
+      "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
+      "sourceName": "lib-tokens/openzeppelin-contracts/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363637383433343339393436"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Context"
       ]
     }
   }

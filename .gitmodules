@@ -17,3 +17,6 @@
 [submodule "lib-tokens/forge-std"]
 	path = lib-tokens/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "lib-tokens/openzeppelin-contracts"]
+	path = lib-tokens/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
