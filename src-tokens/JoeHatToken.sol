@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.6.2;
+pragma solidity ^0.8.15;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
+import {ERC20} from "solmate/tokens/ERC20.sol";
 
-contract JoeHatToken is ERC20Burnable {
+contract JoeHatToken is ERC20 {
     /**
      * @dev Mints `initialSupply` amount of token and transfers them to `owner`.
      *
      * See {ERC20-constructor}.
      */
-    constructor(address owner) public ERC20("Joe Hat Token", "HAT") {
+    constructor(address owner) public ERC20("Joe Hat Token", "HAT", 18) {
         uint256 initialSupply = 150e18;
         _mint(owner, initialSupply);
     }

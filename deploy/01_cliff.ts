@@ -8,7 +8,9 @@ import { HttpNetworkConfig } from "hardhat/types";
 
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
+  /*
   const { dev } = await hre.deployments.getNamedAccount;
+  */
 
   try {
     const config = hre.network.config as HttpNetworkConfig;
@@ -31,7 +33,7 @@ module.exports = async (hre: any) => {
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
     const joe = await ethers.getContractAt("JoeToken", w.address);
-
+    /*
     const { cliffAddress } = await deploy("Cliff", {
         from: w.address,
         args: [joe.address, dev, 0, 3],
@@ -46,6 +48,7 @@ module.exports = async (hre: any) => {
     });
 
     console.log(`cliff contract addr: ` + cliffAddress, newDelegatedEthAddress(cliffAddress).toString());
+    */
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
     console.error(`Error when deploying contract: ${msg}`);
