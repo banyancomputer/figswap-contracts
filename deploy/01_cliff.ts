@@ -31,8 +31,9 @@ module.exports = async (hre: any) => {
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
-
+    /*
     const joe = await ethers.getContractAt("JoeToken", w.address);
+    */
     /*
     const { cliffAddress } = await deploy("Cliff", {
         from: w.address,
