@@ -28,9 +28,30 @@ module.exports = async (hre: any) => {
     });
 
     const joe = await ethers.getContractAt("JoeToken", w.address);
+    const vejoe = await ethers.getContractAt("VeJoeToken", w.address);
+    const sushi = await ethers.getContractAt("SushiToken", w.address);
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
+
+    const { sushichefAddr } = await deploy("MasterChefJoe", {
+      from: w.address,
+      args: [
+        sushi.address,
+        dev,
+        "100000000000000000000",
+        "0",
+        "1000000000000000000000",
+      ],
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
 
     const { chefAddr } = await deploy("MasterChefJoe", {
       from: w.address,
@@ -94,6 +115,49 @@ module.exports = async (hre: any) => {
         nonce,
         log: true,
     });
+
+    const { bmcj } = await deploy("BoostedMasterChefJoe", {
+      from: w.address,
+      proxy: {
+        owner: w.address,
+        proxyContract: "OpenZeppelinTransparentProxy",
+        viaAdminContract: "DefaultProxyAdmin",
+        execute: {
+          init: {
+            methodName: "initialize",
+            args: [chefV2Addr, joe.address, vejoe.address, PID],
+          },
+        },
+      },
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
+
+    const { timelockAddr } = await deploy("CustomMasterChefJoeV2Timelock", {
+      from: w.address,
+      args: [
+        w.address,
+        "43200", // 12 hours = 60*60*12 = 43200
+        "200", // devPercent limit
+        "200", // treasuryPercent limit
+        "100", // investorPercent limit
+        "40000000000000000000", // joePerSec limit
+      ],
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+  });
 
     const MCV2 = await ethers.getContractAt("MasterChefJoeV2", w.address);
     const MCV3 = await ethers.getContractAt("MasterChefJoeV3", w.address);

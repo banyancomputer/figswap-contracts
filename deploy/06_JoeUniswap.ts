@@ -8,6 +8,7 @@ import { HttpNetworkConfig } from "hardhat/types";
 
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
+  const { dev, treasury, investor } = await hre.getNamedAccounts();
 
   try {
     const config = hre.network.config as HttpNetworkConfig;
@@ -26,10 +27,28 @@ module.exports = async (hre: any) => {
       delimeter: "_",
     });
 
+    const factory = await ethers.getContract("JoeFactory");
+    const bar = await ethers.getContract("JoeBar");
+    const joe = await ethers.getContract("JoeToken");
+    const wFIL = await ethers.getContract("wFIL");
+
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const { cryptoScannerAddr } = await deploy("BoringCryptoTokenScanner", {
+    const { makerAddr } = await deploy("JoeRouter02", {
+      from: w.address,
+      args: [factory.address, wFIL.address],
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
+
+    const { zapAddr } = await deploy("Zap", {
         from: w.address,
         args: [],
         // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -40,27 +59,15 @@ module.exports = async (hre: any) => {
         maxPriorityFeePerGas: priorityFee,
         nonce,
         log: true,
-    });
+      });
 
-    const { dashboardAddr } = await deploy("BoringCryptoTokenScanner", {
-      from: w.address,
-      args: [
-        chefAddress,
-        pangolinFactoryAddress[chainId],
-        joeFactoryAddress,
-        wavaxAddress,
-      ],
-      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
-      // a large gasLimit. This should be addressed in the following releases.
-      gasLimit: 1000000000, // BlockGasLimit / 10
-      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
-      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
-      maxPriorityFeePerGas: priorityFee,
-      nonce,
-      log: true,
-  });
+    const zap = await ethers.getContract("Zap");
+    const joe = await deployments.get("JoeToken");
+    const router = await deployments.get("JoeRouter02");
+    await zap.initialize(joe.address, router.address);
 
-    console.log(`scanner contract addr: ` + cryptoScannerAddr, newDelegatedEthAddress(cryptoScannerAddr).toString());
+    console.log(`JoeMaker contract addr: ` + makerAddr, newDelegatedEthAddress(makerAddr).toString());
+    
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);

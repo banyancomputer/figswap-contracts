@@ -78,12 +78,31 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
+    const { vejoeAddress } = await deploy("JoeBar", {
+      from: w.address,
+      args: [],
+      gasLimit: 1000000000,
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
+
+    const { sushiAddress } = await deploy("SushiToken", {
+      from: w.address,
+      args: [],
+      gasLimit: 1000000000,
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
+
     console.log(`wfil addr: ` + wFILAddress, newDelegatedEthAddress(wFILAddress).toString());
     console.log(`usdc addr ` + usdcAddress, newDelegatedEthAddress(usdcAddress).toString());
     console.log(`joe addr ` + joeAddress, newDelegatedEthAddress(joeAddress).toString());
     console.log(`joeBar addr ` + joeBarAddress, newDelegatedEthAddress(joeBarAddress).toString());
     console.log(`joeHat addr ` + joeHatAddress, newDelegatedEthAddress(joeHatAddress).toString());
-
+    console.log(`vejoe addr ` + vejoeAddress, newDelegatedEthAddress(vejoeAddress).toString());
+    console.log(`sushi addr ` + sushiAddress, newDelegatedEthAddress(sushiAddress).toString());
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
     console.error(`Error when deploying contract: ${msg}`);
