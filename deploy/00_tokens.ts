@@ -86,7 +86,7 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    vejoeAddress = await deploy("JoeBar", {
+    vejoeAddress = await deploy("VeJoeToken", {
       from: w.address,
       args: [],
       gasLimit: 1000000000,
