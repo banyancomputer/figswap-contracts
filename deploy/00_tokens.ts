@@ -6,6 +6,14 @@ import fa, { newDelegatedEthAddress } from "@glif/filecoin-address";
 import { ethers } from "hardhat";
 import { HttpNetworkConfig } from "hardhat/types";
 
+export let wFILAddress: string;
+export let usdcAddress: string;
+export let joeAddress: string;
+export let joeBarAddress: string;
+export let joeHatAddress: string;
+export let sushiTokenAddress: string;
+export let vejoeAddress: string;
+
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
 
@@ -29,7 +37,7 @@ module.exports = async (hre: any) => {
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const { wFILAddress } = await deploy("WFIL", {
+    wFILAddress = await deploy("WFIL", {
       from: w.address,
       args: [],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -42,7 +50,7 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    const { usdcAddress } = await deploy("USDC", {
+    usdcAddress = await deploy("USDC", {
       from: w.address,
       args: [],
       gasLimit: 1000000000,
@@ -51,7 +59,7 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    const { joeAddress } = await deploy("JoeToken", {
+    joeAddress = await deploy("JoeToken", {
       from: w.address,
       args: [],
       gasLimit: 1000000000,
@@ -60,7 +68,7 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    const { joeHatAddress } = await deploy("JoeHatToken", {
+    joeHatAddress = await deploy("JoeHatToken", {
       from: w.address,
       args: [w.address],
       gasLimit: 1000000000,
@@ -69,7 +77,7 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    const { joeBarAddress } = await deploy("JoeBar", {
+    joeBarAddress = await deploy("JoeBar", {
       from: w.address,
       args: [joeAddress],
       gasLimit: 1000000000,
@@ -78,7 +86,7 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    const { vejoeAddress } = await deploy("JoeBar", {
+    vejoeAddress = await deploy("JoeBar", {
       from: w.address,
       args: [],
       gasLimit: 1000000000,
@@ -87,7 +95,7 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    const { sushiAddress } = await deploy("SushiToken", {
+    sushiTokenAddress = await deploy("SushiToken", {
       from: w.address,
       args: [],
       gasLimit: 1000000000,
@@ -102,9 +110,11 @@ module.exports = async (hre: any) => {
     console.log(`joeBar addr ` + joeBarAddress, newDelegatedEthAddress(joeBarAddress).toString());
     console.log(`joeHat addr ` + joeHatAddress, newDelegatedEthAddress(joeHatAddress).toString());
     console.log(`vejoe addr ` + vejoeAddress, newDelegatedEthAddress(vejoeAddress).toString());
-    console.log(`sushi addr ` + sushiAddress, newDelegatedEthAddress(sushiAddress).toString());
+    console.log(`sushiToken addr ` + sushiTokenAddress, newDelegatedEthAddress(sushiTokenAddress).toString());
+
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
     console.error(`Error when deploying contract: ${msg}`);
   }
+
 };

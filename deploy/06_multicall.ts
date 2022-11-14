@@ -29,7 +29,7 @@ module.exports = async (hre: any) => {
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const { cryptoScannerAddr } = await deploy("BoringCryptoTokenScanner", {
+    const { multicallAddress } = await deploy("Multicall", {
         from: w.address,
         args: [],
         // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -42,25 +42,7 @@ module.exports = async (hre: any) => {
         log: true,
     });
 
-    const { dashboardAddr } = await deploy("BoringCryptoTokenScanner", {
-      from: w.address,
-      args: [
-        chefAddress,
-        pangolinFactoryAddress[chainId],
-        joeFactoryAddress,
-        wavaxAddress,
-      ],
-      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
-      // a large gasLimit. This should be addressed in the following releases.
-      gasLimit: 1000000000, // BlockGasLimit / 10
-      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
-      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
-      maxPriorityFeePerGas: priorityFee,
-      nonce,
-      log: true,
-  });
-
-    console.log(`scanner contract addr: ` + cryptoScannerAddr, newDelegatedEthAddress(cryptoScannerAddr).toString());
+    console.log(`multicall contract addr: ` + multicallAddress, newDelegatedEthAddress(multicallAddress).toString());
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);

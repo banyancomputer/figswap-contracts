@@ -5,7 +5,8 @@ import RpcEngine from "@glif/filecoin-rpc-client";
 import fa, { newDelegatedEthAddress } from "@glif/filecoin-address";
 import { ethers } from "hardhat";
 import { HttpNetworkConfig } from "hardhat/types";
-import * as tokens from "./00_tokens";
+
+export let joeFactoryAddress: string;
 
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
@@ -31,11 +32,9 @@ module.exports = async (hre: any) => {
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const joe = await ethers.getContractAt("JoeToken", tokens.joeAddress, w);
-
-    const { cliffAddress } = await deploy("Cliff", {
+    joeFactoryAddress = await deploy("JoeFactory", {
         from: w.address,
-        args: [joe.address, dev, 0, 3],
+        args: [dev],
         // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
         // a large gasLimit. This should be addressed in the following releases.
         gasLimit: 1000000000, // BlockGasLimit / 10
@@ -46,7 +45,7 @@ module.exports = async (hre: any) => {
         log: true,
     });
 
-    console.log(`cliff contract addr: ` + cliffAddress, newDelegatedEthAddress(cliffAddress).toString());
+    console.log(`JoeFactory contract addr: ` + joeFactoryAddress, newDelegatedEthAddress(joeFactoryAddress).toString());
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);

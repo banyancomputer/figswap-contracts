@@ -4453,7 +4453,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4503,7 +4503,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4552,7 +4552,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4599,7 +4599,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4653,7 +4653,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4706,7 +4706,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4753,7 +4753,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4804,7 +4804,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4851,7 +4851,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4900,7 +4900,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4947,7 +4947,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -4994,7 +4994,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5041,7 +5041,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5058,8 +5058,8 @@
       ]
     },
     "/Users/xh/figswap-contracts/src-tokens/JoeToken.sol": {
-      "lastModificationDate": 1667847819771,
-      "contentHash": "858a6e324e8020d242a5e857050bb9b4",
+      "lastModificationDate": 1667847939351,
+      "contentHash": "ef89275f252b4d8993b0dea5d62ef82d",
       "sourceName": "src-tokens/JoeToken.sol",
       "solcConfig": {
         "version": "0.8.15",
@@ -5091,14 +5091,14 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
       },
       "imports": [
-        "lib-tokens/solmate/src/tokens/ERC20.sol",
-        "lib-tokens/solmate/src/utils/SafeTransferLib.sol"
+        "lib-tokens/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
+        "lib-tokens/openzeppelin-contracts/contracts/access/Ownable.sol"
       ],
       "versionPragmas": [
         "^0.8.15"
@@ -5141,7 +5141,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437333333323434"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5190,7 +5190,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5237,7 +5237,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5288,7 +5288,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5335,7 +5335,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5349,8 +5349,8 @@
       ]
     },
     "/Users/xh/figswap-contracts/src-tokens/JoeHatToken.sol": {
-      "lastModificationDate": 1667847102886,
-      "contentHash": "e9ad2c07cb1376ad17e8449b2ca04aad",
+      "lastModificationDate": 1667848209879,
+      "contentHash": "fb132758b851a069a340da732ae7efd5",
       "sourceName": "src-tokens/JoeHatToken.sol",
       "solcConfig": {
         "version": "0.8.15",
@@ -5382,7 +5382,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5431,7 +5431,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5482,7 +5482,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5531,7 +5531,7 @@
           },
           "libraries": {
             "": {
-              "__CACHE_BREAKER__": "0x0000000000000031363637383437383237333333"
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
             }
           }
         }
@@ -5545,6 +5545,154 @@
       ],
       "artifacts": [
         "ERC20Burnable"
+      ]
+    },
+    "/Users/xh/figswap-contracts/src-tokens/VeJoeToken.sol": {
+      "lastModificationDate": 1667921117509,
+      "contentHash": "9369ab08743cbdf935d8ebb00da17fab",
+      "sourceName": "src-tokens/VeJoeToken.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
+            }
+          }
+        }
+      },
+      "imports": [
+        "lib-tokens/openzeppelin-contracts/contracts/access/Ownable.sol",
+        "./VeERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.15"
+      ],
+      "artifacts": [
+        "IBoostedMasterChefJoe",
+        "VeJoeToken"
+      ]
+    },
+    "/Users/xh/figswap-contracts/src-tokens/VeERC20.sol": {
+      "lastModificationDate": 1667935024064,
+      "contentHash": "b14e54b97a3e2d6b678d7177ac18fed9",
+      "sourceName": "src-tokens/VeERC20.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
+            }
+          }
+        }
+      },
+      "imports": [
+        "lib-tokens/openzeppelin-contracts/contracts/utils/Context.sol",
+        "./interfaces/IVeERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.15"
+      ],
+      "artifacts": [
+        "VeERC20"
+      ]
+    },
+    "/Users/xh/figswap-contracts/src-tokens/interfaces/IVeERC20.sol": {
+      "lastModificationDate": 1668449487501,
+      "contentHash": "6bd9523c730e77b404c10af7c037b3a9",
+      "sourceName": "src-tokens/interfaces/IVeERC20.sol",
+      "solcConfig": {
+        "version": "0.8.15",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363638343536313634333830"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.15"
+      ],
+      "artifacts": [
+        "IVeERC20"
       ]
     }
   }

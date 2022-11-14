@@ -5,6 +5,7 @@ import RpcEngine from "@glif/filecoin-rpc-client";
 import fa, { newDelegatedEthAddress } from "@glif/filecoin-address";
 import { ethers } from "hardhat";
 import { HttpNetworkConfig } from "hardhat/types";
+import * as tokens from "./00_tokens";
 
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
@@ -27,9 +28,9 @@ module.exports = async (hre: any) => {
       delimeter: "_",
     });
 
-    const joe = await ethers.getContractAt("JoeToken", w.address);
-    const vejoe = await ethers.getContractAt("VeJoeToken", w.address);
-    const sushi = await ethers.getContractAt("SushiToken", w.address);
+    const joe = await ethers.getContractAt("JoeToken", tokens.joeAddress, w);
+    const vejoe = await ethers.getContractAt("VeJoeToken", tokens.vejoeAddress, w);
+    const sushi = await ethers.getContractAt("SushiToken", tokens.sushiTokenAddress, w);
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
@@ -161,6 +162,26 @@ module.exports = async (hre: any) => {
 
     const MCV2 = await ethers.getContractAt("MasterChefJoeV2", w.address);
     const MCV3 = await ethers.getContractAt("MasterChefJoeV3", w.address);
+
+    const rewarder = await deploy("MasterChefRewarderPerBlock", {
+      from: w.address,
+      args: [
+        w.address,
+        "43200", // 12 hours = 60*60*12 = 43200
+        "200", // devPercent limit
+        "200", // treasuryPercent limit
+        "100", // investorPercent limit
+        "40000000000000000000", // joePerSec limit
+      ],
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
 
     const dummyToken = await ethers.getContractAt("wFIL", w.address);
     await (await MCV2.add(100, dummyToken.address, false)).wait();

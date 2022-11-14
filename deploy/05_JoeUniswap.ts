@@ -5,10 +5,11 @@ import RpcEngine from "@glif/filecoin-rpc-client";
 import fa, { newDelegatedEthAddress } from "@glif/filecoin-address";
 import { ethers } from "hardhat";
 import { HttpNetworkConfig } from "hardhat/types";
+import * as tokens from "./00_tokens";
+import * as factory from "./03_JoeFactory";
 
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
-  const { dev, treasury, investor } = await hre.getNamedAccounts();
 
   try {
     const config = hre.network.config as HttpNetworkConfig;
@@ -27,17 +28,17 @@ module.exports = async (hre: any) => {
       delimeter: "_",
     });
 
-    const factory = await ethers.getContract("JoeFactory");
-    const bar = await ethers.getContract("JoeBar");
-    const joe = await ethers.getContract("JoeToken");
-    const wFIL = await ethers.getContract("wFIL");
+    const joeFactory = await ethers.getContractAt("JoeFactory", factory.joeFactoryAddress);
+    const bar = await ethers.getContractAt("JoeBar", tokens.joeBarAddress);
+    const joe = await ethers.getContractAt("JoeToken", tokens.joeAddress);
+    const wFIL = await ethers.getContractAt("wFIL", tokens.wFILAddress);
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
     const { makerAddr } = await deploy("JoeRouter02", {
       from: w.address,
-      args: [factory.address, wFIL.address],
+      args: [joeFactory.address, wFIL.address],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
       // a large gasLimit. This should be addressed in the following releases.
       gasLimit: 1000000000, // BlockGasLimit / 10
@@ -61,8 +62,7 @@ module.exports = async (hre: any) => {
         log: true,
       });
 
-    const zap = await ethers.getContract("Zap");
-    const joe = await deployments.get("JoeToken");
+    const zap = await ethers.getContractAt("Zap", zapAddr);
     const router = await deployments.get("JoeRouter02");
     await zap.initialize(joe.address, router.address);
 
