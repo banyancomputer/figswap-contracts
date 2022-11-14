@@ -36,7 +36,7 @@ module.exports = async (hre: any) => {
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const { makerAddr } = await deploy("JoeRouter02", {
+    const { routerAddress } = await deploy("JoeRouter02", {
       from: w.address,
       args: [joeFactory.address, wFIL.address],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -63,10 +63,10 @@ module.exports = async (hre: any) => {
       });
 
     const zap = await ethers.getContractAt("Zap", zapAddr);
-    const router = await deployments.get("JoeRouter02");
+    const router = await ethers.getContractAt("JoeRouter02", routerAddress);
     await zap.initialize(joe.address, router.address);
 
-    console.log(`JoeMaker contract addr: ` + makerAddr, newDelegatedEthAddress(makerAddr).toString());
+    console.log(`router contract addr: ` + routerAddress, newDelegatedEthAddress(routerAddress).toString());
     
 
   } catch (err) {
