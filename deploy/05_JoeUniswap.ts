@@ -28,10 +28,10 @@ module.exports = async (hre: any) => {
       delimeter: "_",
     });
 
-    const joeFactory = await ethers.getContractAt("JoeFactory", factory.joeFactoryAddress);
-    const bar = await ethers.getContractAt("JoeBar", tokens.joeBarAddress);
-    const joe = await ethers.getContractAt("JoeToken", tokens.joeAddress);
-    const wFIL = await ethers.getContractAt("wFIL", tokens.wFILAddress);
+    const joeFactory = await ethers.getContractAt("JoeFactory", factory.joeFactoryAddress, w);
+    const bar = await ethers.getContractAt("JoeBar", tokens.joeBarAddress, w);
+    const joe = await ethers.getContractAt("JoeToken", tokens.joeAddress, w);
+    const wFIL = await ethers.getContractAt("wFIL", tokens.wFILAddress, w);
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
@@ -62,8 +62,8 @@ module.exports = async (hre: any) => {
         log: true,
       });
 
-    const zap = await ethers.getContractAt("Zap", zapAddr);
-    const router = await ethers.getContractAt("JoeRouter02", routerAddress);
+    const zap = await ethers.getContractAt("Zap", zapAddr, w);
+    const router = await ethers.getContractAt("JoeRouter02", routerAddress, w);
     await zap.initialize(joe.address, router.address);
 
     console.log(`router contract addr: ` + routerAddress, newDelegatedEthAddress(routerAddress).toString());

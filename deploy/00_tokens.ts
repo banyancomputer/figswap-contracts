@@ -13,6 +13,7 @@ export let joeBarAddress: string;
 export let joeHatAddress: string;
 export let sushiTokenAddress: string;
 export let vejoeAddress: string;
+export let multicallAddress: string;
 
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
@@ -104,13 +105,18 @@ module.exports = async (hre: any) => {
       log: true,
     });
 
-    console.log(`wfil addr: ` + wFILAddress, newDelegatedEthAddress(wFILAddress).toString());
-    console.log(`usdc addr ` + usdcAddress, newDelegatedEthAddress(usdcAddress).toString());
-    console.log(`joe addr ` + joeAddress, newDelegatedEthAddress(joeAddress).toString());
-    console.log(`joeBar addr ` + joeBarAddress, newDelegatedEthAddress(joeBarAddress).toString());
-    console.log(`joeHat addr ` + joeHatAddress, newDelegatedEthAddress(joeHatAddress).toString());
-    console.log(`vejoe addr ` + vejoeAddress, newDelegatedEthAddress(vejoeAddress).toString());
-    console.log(`sushiToken addr ` + sushiTokenAddress, newDelegatedEthAddress(sushiTokenAddress).toString());
+    multicallAddress = await deploy("Multicall2", {
+      from: w.address,
+      args: [],
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+  });
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);

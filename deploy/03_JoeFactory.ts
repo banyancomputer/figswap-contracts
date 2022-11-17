@@ -45,8 +45,6 @@ module.exports = async (hre: any) => {
         log: true,
     });
 
-    console.log(`JoeFactory contract addr: ` + joeFactoryAddress, newDelegatedEthAddress(joeFactoryAddress).toString());
-
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
     console.error(`Error when deploying contract: ${msg}`);

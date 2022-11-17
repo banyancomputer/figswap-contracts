@@ -15,6 +15,7 @@ module.exports = async (hre: any) => {
     const config = hre.network.config as HttpNetworkConfig;
     // generate the f1 address equivalent from the same private key
     // note this method of extracting private key from hre might be unsafe...
+    // as a reminder: wallet can be used anywhere signer is expected (implements signer API)
     const w = new ethers.Wallet((config.accounts as string[])[0]);
     const pubKey = Uint8Array.from(Buffer.from(w.publicKey.slice(2), "hex"));
     const f1addr = fa.newSecp256k1Address(pubKey).toString();
@@ -45,8 +46,6 @@ module.exports = async (hre: any) => {
         nonce,
         log: true,
     });
-
-    console.log(`cliff contract addr: ` + cliffAddress, newDelegatedEthAddress(cliffAddress).toString());
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
