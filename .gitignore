@@ -28,6 +28,6 @@ typechain-types
 
 #Hardhat files
 cache
-cache-hardhat
+cache_hardhat
 artifacts
 

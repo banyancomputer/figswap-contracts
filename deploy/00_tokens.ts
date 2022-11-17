@@ -68,25 +68,6 @@ module.exports = async (hre: any) => {
       nonce,
       log: true,
     });
-
-    joeHatAddress = await deploy("JoeHatToken", {
-      from: w.address,
-      args: [w.address],
-      gasLimit: 1000000000,
-      maxPriorityFeePerGas: priorityFee,
-      nonce,
-      log: true,
-    });
-
-    joeBarAddress = await deploy("JoeBar", {
-      from: w.address,
-      args: [joeAddress],
-      gasLimit: 1000000000,
-      maxPriorityFeePerGas: priorityFee,
-      nonce,
-      log: true,
-    });
-
     vejoeAddress = await deploy("VeJoeToken", {
       from: w.address,
       args: [],
@@ -117,6 +98,27 @@ module.exports = async (hre: any) => {
       nonce,
       log: true,
   });
+  
+    /*
+    joeHatAddress = await deploy("JoeHatToken", {
+      from: w.address,
+      args: [w.address],
+      gasLimit: 1000000000,
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
+    
+    joeBarAddress = await deploy("JoeBar", {
+      from: w.address,
+      args: [joeAddress],
+      gasLimit: 1000000000,
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
+
+  */
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
