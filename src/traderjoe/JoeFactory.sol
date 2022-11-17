@@ -33,9 +33,8 @@ contract JoeFactory is IJoeFactory {
         require(token0 != address(0), "Joe: ZERO_ADDRESS");
         require(getPair[token0][token1] == address(0), "Joe: PAIR_EXISTS"); // single check is sufficient
         bytes memory bytecode = type(JoePair).creationCode;
-        bytes32 salt = keccak256(abi.encodePacked(token0, token1));
         assembly {
-            pair := create2(0, add(bytecode, 32), mload(bytecode), salt)
+            pair := create(0, add(bytecode, 32), mload(bytecode))
         }
         JoePair(pair).initialize(token0, token1);
         getPair[token0][token1] = pair;
