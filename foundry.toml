@@ -9,6 +9,7 @@ remappings = [
   "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/"
 ]
 solc_version = '0.6.12'
+rpc_endpoints = { wallaby = '${WALLABY_RPC_URL}' }
 
 [profile.tokens]
 src = 'src-tokens'
@@ -18,9 +19,11 @@ remappings = [
   "ds-test/=lib-tokens/forge-std/lib/ds-test/src/",
   "forge-std/=lib-tokens/forge-std/src/",
   "solmate/=lib-tokens/solmate/src/",
-  "src-tokens/=src-tokens/"
+  "src-tokens/=src-tokens/",
+  "@openzeppelin/=lib-tokens/openzeppelin-contracts/"
 ]
 solc_version = '0.8.15'
+rpc_endpoints = { wallaby = '${WALLABY_RPC_URL}' }
 
 [profile.stable-staking]
 src = 'src-stable_staking'

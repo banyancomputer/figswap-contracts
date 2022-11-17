@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "deploy": "npx hardhat --network wallaby deploy",
+    "deploy-tokens": "source .env && forge script script/Tokens.s.sol:BanyanDeployScript --rpc-url $WALLABY_RPC_URL --broadcast -vvvv",
     "local-node": "anvil",
     "test": "test"
   },

@@ -1,5 +1,0 @@
-ds-test/=lib-tokens/forge-std/lib/ds-test/src/
-forge-std/=lib-tokens/forge-std/src/
-solmate/=lib-tokens/solmate/src/
-src/=src/
-@openzeppelin/=lib-tokens/openzeppelin-contracts/
