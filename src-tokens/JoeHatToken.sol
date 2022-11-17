@@ -9,7 +9,7 @@ contract JoeHatToken is ERC20Burnable {
      *
      * See {ERC20-constructor}.
      */
-    constructor(address owner) ERC20("Joe Hat Token", "HAT") {
+    constructor(address owner) ERC20("Joe Hat", "HAT") {
         uint256 initialSupply = 150e18;
         _mint(owner, initialSupply);
     }
