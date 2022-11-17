@@ -160,8 +160,8 @@ module.exports = async (hre: any) => {
       log: true,
   });
 
-    const MCV2 = await ethers.getContractAt("MasterChefJoeV2", w.address);
-    const MCV3 = await ethers.getContractAt("MasterChefJoeV3", w.address);
+    const MCV2 = await ethers.getContractAt("MasterChefJoeV2", chefV2Addr, w);
+    const MCV3 = await ethers.getContractAt("MasterChefJoeV3", chefV3Addr, w);
 
     const rewarder = await deploy("MasterChefRewarderPerBlock", {
       from: w.address,
@@ -189,8 +189,6 @@ module.exports = async (hre: any) => {
     await rewarder.init(dummyToken.address, {
       gasLimit: 245000,
     });
-
-    console.log(`chefV2 contract addr: ` + chefV2Addr, newDelegatedEthAddress(chefV2Addr).toString());
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);

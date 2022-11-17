@@ -1,17 +1,14 @@
 // SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-// JoeToken with Governance.
-contract JoeToken is ERC20("JoeToken", "JOE") {
-    /// @notice Total number of tokens
-    uint256 public maxSupply = 500_000_000e18; // 500 million Joe
-
-    /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (MasterJoe).
-    function mint(address _to, uint256 _amount) public {
-        require(totalSupply() + _amount <= maxSupply, "JOE::mint: cannot exceed max supply");
+// SushiToken with Governance.
+contract SushiToken is ERC20("SushiToken", "SUSHI"), Ownable {
+    /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (MasterChef).
+    function mint(address _to, uint256 _amount) public onlyOwner {
         _mint(_to, _amount);
         _moveDelegates(address(0), _delegates[_to], _amount);
     }
@@ -96,9 +93,9 @@ contract JoeToken is ERC20("JoeToken", "JOE") {
         bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
 
         address signatory = ecrecover(digest, v, r, s);
-        require(signatory != address(0), "JOE::delegateBySig: invalid signature");
-        require(nonce == nonces[signatory]++, "JOE::delegateBySig: invalid nonce");
-        require(block.timestamp <= expiry, "JOE::delegateBySig: signature expired");
+        require(signatory != address(0), "SUSHI::delegateBySig: invalid signature");
+        require(nonce == nonces[signatory]++, "SUSHI::delegateBySig: invalid nonce");
+        require(block.timestamp <= expiry, "SUSHI::delegateBySig: signature expired");
         return _delegate(signatory, delegatee);
     }
 
@@ -120,7 +117,7 @@ contract JoeToken is ERC20("JoeToken", "JOE") {
      * @return The number of votes the account had as of the given block
      */
     function getPriorVotes(address account, uint256 blockNumber) external view returns (uint256) {
-        require(blockNumber < block.number, "JOE::getPriorVotes: not yet determined");
+        require(blockNumber < block.number, "SUSHI::getPriorVotes: not yet determined");
 
         uint32 nCheckpoints = numCheckpoints[account];
         if (nCheckpoints == 0) {
@@ -155,7 +152,7 @@ contract JoeToken is ERC20("JoeToken", "JOE") {
 
     function _delegate(address delegator, address delegatee) internal {
         address currentDelegate = _delegates[delegator];
-        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying JOEs (not scaled);
+        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying SUSHIs (not scaled);
         _delegates[delegator] = delegatee;
 
         emit DelegateChanged(delegator, currentDelegate, delegatee);
@@ -193,7 +190,7 @@ contract JoeToken is ERC20("JoeToken", "JOE") {
         uint256 oldVotes,
         uint256 newVotes
     ) internal {
-        uint32 blockNumber = safe32(block.number, "JOE::_writeCheckpoint: block number exceeds 32 bits");
+        uint32 blockNumber = safe32(block.number, "SUSHI::_writeCheckpoint: block number exceeds 32 bits");
 
         if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {
             checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;
