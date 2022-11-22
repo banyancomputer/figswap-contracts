@@ -99,7 +99,6 @@ module.exports = async (hre: any) => {
       log: true,
   });
   
-    /*
     joeHatAddress = await deploy("JoeHatToken", {
       from: w.address,
       args: [w.address],
@@ -117,8 +116,6 @@ module.exports = async (hre: any) => {
       nonce,
       log: true,
     });
-
-  */
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);

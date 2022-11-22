@@ -35,11 +35,11 @@ module.exports = async (hre: any) => {
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const { sushichefAddr } = await deploy("MasterChefJoe", {
+    const { sushichefAddr } = await deploy("MasterChef", {
       from: w.address,
       args: [
         sushi.address,
-        dev,
+        w.address,
         "100000000000000000000",
         "0",
         "1000000000000000000000",
@@ -58,8 +58,8 @@ module.exports = async (hre: any) => {
       from: w.address,
       args: [
         joe.address,
-        dev,
-        treasury,
+        w.address,
+        w.address, //TODO: Replace with Treasury address
         "100000000000000000000",
         "1619065864",
         "200",
@@ -79,9 +79,9 @@ module.exports = async (hre: any) => {
         from: w.address,
         args: [
             joe.address,
-            dev,
-            treasury,
-            investor,
+            w.address,
+            treasury, //TODO: Treasury
+            investor, //TODO: Investor
             "30000000000000000000", // 30 JOE per sec
             "1625320800", // Sat Jul 03 10:00
             "200", // 20%

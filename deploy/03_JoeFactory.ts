@@ -10,7 +10,7 @@ export let joeFactoryAddress: string;
 
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
-  const { dev } = await hre.getNamedAccounts();
+  // const { dev } = await hre.getNamedAccounts();
 
   try {
     const config = hre.network.config as HttpNetworkConfig;
@@ -34,7 +34,7 @@ module.exports = async (hre: any) => {
 
     joeFactoryAddress = await deploy("JoeFactory", {
         from: w.address,
-        args: [dev],
+        args: [w.address],
         // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
         // a large gasLimit. This should be addressed in the following releases.
         gasLimit: 1000000000, // BlockGasLimit / 10
