@@ -14,7 +14,6 @@ import { JoeBar } from "../src-tokens/JoeBar.sol";
 
 contract Tokens is Script {
 
-    // Suitable for Goerli deployment
     WFIL wfil;
     USDC usdc;
     JoeToken joetoken;
