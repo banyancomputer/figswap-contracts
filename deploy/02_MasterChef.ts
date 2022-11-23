@@ -9,7 +9,7 @@ import * as tokens from "./00_tokens";
 
 module.exports = async (hre: any) => {
   const deploy = hre.deployments.deploy;
-  const { dev, treasury, investor } = await hre.getNamedAccounts();
+  const { treasury, investor } = await hre.getNamedAccounts();
 
   try {
     const config = hre.network.config as HttpNetworkConfig;

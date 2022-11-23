@@ -97,20 +97,20 @@ module.exports = async (hre: any) => {
       maxPriorityFeePerGas: priorityFee,
       nonce,
       log: true,
-  });
-  
-    joeHatAddress = await deploy("JoeHatToken", {
+    });
+
+    joeBarAddress = await deploy("JoeBar", {
       from: w.address,
-      args: [w.address],
+      args: [joeAddress],
       gasLimit: 1000000000,
       maxPriorityFeePerGas: priorityFee,
       nonce,
       log: true,
     });
-    
-    joeBarAddress = await deploy("JoeBar", {
+  
+    joeHatAddress = await deploy("JoeHatToken", {
       from: w.address,
-      args: [joeAddress],
+      args: [w.address],
       gasLimit: 1000000000,
       maxPriorityFeePerGas: priorityFee,
       nonce,
