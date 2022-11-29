@@ -1,0 +1,42 @@
+{
+    "name": "figswap-tokens",
+    "version": "0.0.0",
+    "description": "figs tokens",
+    "main": "index.js",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "scripts": {
+        "deploy": "npx hardhat --network wallaby deploy",
+        "local-node": "anvil",
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/banyancomputer/figswap-contracts.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/banyancomputer/figswap-contracts/issues"
+    },
+    "homepage": "https://github.com/banyancomputer/figswap-contracts#readme",
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+        "hardhat": "^2.11.2",
+        "hardhat-preprocessor": "^0.1.5"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.19.4",
+        "@ethereumjs/common": "^3.0.0",
+        "@ethereumjs/tx": "^4.0.0",
+        "@glif/filecoin-address": "^2.0.13",
+        "@glif/filecoin-rpc-client": "^2.0.8",
+        "@glif/filecoin-wallet-provider": "^2.0.11",
+        "dotenv": "^16.0.3",
+        "ethereumjs-tx": "^2.1.2",
+        "hardhat-deploy": "^0.11.18",
+        "hardhat-deploy-ethers": "^0.3.0-beta.13"
+    }
+}
