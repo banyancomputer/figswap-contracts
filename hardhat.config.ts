@@ -23,7 +23,6 @@ const config: HardhatUserConfig = {
     wallaby: {
       url: "https://wallaby.node.glif.io/rpc/v0",
       chainId: 31415,
-      // be careful....
       accounts: [
         process.env.PRIVATE_KEY!,
       ],
@@ -47,6 +46,7 @@ const config: HardhatUserConfig = {
   paths: {
     sources: "./src-tokens",
     cache: "./cache_hardhat",
+    deploy: "./deploy",
   },
 };
 

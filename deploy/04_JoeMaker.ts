@@ -2,17 +2,16 @@ import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 
 import RpcEngine from "@glif/filecoin-rpc-client";
-import fa, { newDelegatedEthAddress } from "@glif/filecoin-address";
-import { ethers } from "hardhat";
-import { HttpNetworkConfig } from "hardhat/types";
-import * as tokens from "./00_tokens";
-import * as factory from "./03_JoeFactory";
+import fa from "@glif/filecoin-address";
+import { HttpNetworkConfig, HardhatRuntimeEnvironment } from "hardhat/types";
 
-module.exports = async (hre: any) => {
-  const deploy = hre.deployments.deploy;
-
-  try {
-    const config = hre.network.config as HttpNetworkConfig;
+const main = async ({
+  network,
+  deployments,
+  ethers,
+}: HardhatRuntimeEnvironment) => {
+  const { deploy } = deployments;
+    const config = network.config as HttpNetworkConfig;
     // generate the f1 address equivalent from the same private key
     // note this method of extracting private key from hre might be unsafe...
     const w = new ethers.Wallet((config.accounts as string[])[0]);
@@ -28,15 +27,15 @@ module.exports = async (hre: any) => {
       delimeter: "_",
     });
 
-    const joefactory = await ethers.getContractAt("JoeFactory", factory.joeFactoryAddress);
-    const bar = await ethers.getContractAt("JoeBar", tokens.joeBarAddress);
-    const joe = await ethers.getContractAt("JoeToken", tokens.joeAddress);
-    const wFIL = await ethers.getContractAt("wFIL", tokens.wFILAddress);
+    const joefactory = await deployments.get("JoeFactory");
+    const bar = await deployments.get("JoeBar");
+    const joe = await deployments.get("JoeToken");
+    const wFIL = await deployments.get("wFIL");
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const { makerAddr } = await deploy("JoeMaker", {
+    const joemaker = await deploy("JoeMaker", {
       from: w.address,
       args: [joefactory.address, bar.address, joe.address, wFIL.address],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -48,8 +47,9 @@ module.exports = async (hre: any) => {
       nonce,
       log: true,
     });
+    console.log(`maker address: ${joemaker.address}`);
 
-    const { makerV2Addr } = await deploy("JoeMakerV2", {
+    const joemakerv2 = await deploy("JoeMakerV2", {
       from: w.address,
       args: [joefactory.address, bar.address, joe.address, wFIL.address],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -61,8 +61,9 @@ module.exports = async (hre: any) => {
       nonce,
       log: true,
     });
+    console.log(`maker v2 address: ${joemakerv2.address}`);
 
-    const { makerV3Addr } = await deploy("JoeMakerV3", {
+    const joemakerv3 = await deploy("JoeMakerV3", {
       from: w.address,
       args: [joefactory.address, bar.address, joe.address, wFIL.address],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -74,9 +75,7 @@ module.exports = async (hre: any) => {
       nonce,
       log: true,
     });
-
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : JSON.stringify(err);
-    console.error(`Error when deploying contract: ${msg}`);
-  }
+    console.log(`maker v3 address: ${joemakerv3.address}`);
 };
+
+export default main;

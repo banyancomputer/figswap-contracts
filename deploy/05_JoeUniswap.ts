@@ -3,16 +3,16 @@ import "hardhat-deploy-ethers";
 
 import RpcEngine from "@glif/filecoin-rpc-client";
 import fa, { newDelegatedEthAddress } from "@glif/filecoin-address";
-import { ethers } from "hardhat";
-import { HttpNetworkConfig } from "hardhat/types";
-import * as tokens from "./00_tokens";
-import * as factory from "./03_JoeFactory";
+import { HttpNetworkConfig, HardhatRuntimeEnvironment } from "hardhat/types";
 
-module.exports = async (hre: any) => {
-  const deploy = hre.deployments.deploy;
+const main = async ({
+  network,
+  deployments,
+  ethers,
+}: HardhatRuntimeEnvironment) => {
+  const { deploy } = deployments;
 
-  try {
-    const config = hre.network.config as HttpNetworkConfig;
+    const config = network.config as HttpNetworkConfig;
     // generate the f1 address equivalent from the same private key
     // note this method of extracting private key from hre might be unsafe...
     const w = new ethers.Wallet((config.accounts as string[])[0]);
@@ -28,17 +28,16 @@ module.exports = async (hre: any) => {
       delimeter: "_",
     });
 
-    const joeFactory = await ethers.getContractAt("JoeFactory", factory.joeFactoryAddress, w);
-    const bar = await ethers.getContractAt("JoeBar", tokens.joeBarAddress, w);
-    const joe = await ethers.getContractAt("JoeToken", tokens.joeAddress, w);
-    const wFIL = await ethers.getContractAt("wFIL", tokens.wFILAddress, w);
+    const joefactory = await deployments.get("JoeFactory");
+    const joe = await deployments.get("JoeToken");
+    const wFIL = await deployments.get("wFIL");
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const { routerAddress } = await deploy("JoeRouter02", {
+    const router = await deploy("JoeRouter02", {
       from: w.address,
-      args: [joeFactory.address, wFIL.address],
+      args: [joefactory.address, wFIL.address],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
       // a large gasLimit. This should be addressed in the following releases.
       gasLimit: 1000000000, // BlockGasLimit / 10
@@ -48,8 +47,9 @@ module.exports = async (hre: any) => {
       nonce,
       log: true,
     });
+    console.log(`router address: ${router.address}`);
 
-    const { zapAddr } = await deploy("Zap", {
+    await deploy("Zap", {
         from: w.address,
         args: [],
         // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -62,15 +62,9 @@ module.exports = async (hre: any) => {
         log: true,
       });
 
-    const zap = await ethers.getContractAt("Zap", zapAddr, w);
-    const router = await ethers.getContractAt("JoeRouter02", routerAddress, w);
+    const zap = await deployments.get("Zap");
     await zap.initialize(joe.address, router.address);
 
-    console.log(`router contract addr: ` + routerAddress, newDelegatedEthAddress(routerAddress).toString());
+    console.log(`router contract addr: ` + router.address, newDelegatedEthAddress(router.address).toString());
     
-
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : JSON.stringify(err);
-    console.error(`Error when deploying contract: ${msg}`);
-  }
 };

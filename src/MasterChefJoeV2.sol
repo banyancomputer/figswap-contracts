@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./JoeToken.sol";
+import "../src-tokens/JoeToken.sol";
 import "./libraries/BoringERC20.sol";
 import "hardhat/console.sol";
 

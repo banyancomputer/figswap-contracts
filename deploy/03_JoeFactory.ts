@@ -2,18 +2,17 @@ import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 
 import RpcEngine from "@glif/filecoin-rpc-client";
-import fa, { newDelegatedEthAddress } from "@glif/filecoin-address";
-import { ethers } from "hardhat";
-import { HttpNetworkConfig } from "hardhat/types";
+import fa from "@glif/filecoin-address";
+import { HttpNetworkConfig, HardhatRuntimeEnvironment } from "hardhat/types";
 
-export let joeFactoryAddress: string;
+const main = async ({
+  network,
+  deployments,
+  ethers,
+}: HardhatRuntimeEnvironment) => {
+  const { deploy } = deployments;
 
-module.exports = async (hre: any) => {
-  const deploy = hre.deployments.deploy;
-  // const { dev } = await hre.getNamedAccounts();
-
-  try {
-    const config = hre.network.config as HttpNetworkConfig;
+    const config = network.config as HttpNetworkConfig;
     // generate the f1 address equivalent from the same private key
     // note this method of extracting private key from hre might be unsafe...
     const w = new ethers.Wallet((config.accounts as string[])[0]);
@@ -32,7 +31,7 @@ module.exports = async (hre: any) => {
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    joeFactoryAddress = await deploy("JoeFactory", {
+    const joefactory = await deploy("JoeFactory", {
         from: w.address,
         args: [w.address],
         // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
@@ -44,9 +43,8 @@ module.exports = async (hre: any) => {
         nonce,
         log: true,
     });
+    console.log(`joefactory address: ${joefactory.address}`);
 
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : JSON.stringify(err);
-    console.error(`Error when deploying contract: ${msg}`);
-  }
 };
+
+export default main;
