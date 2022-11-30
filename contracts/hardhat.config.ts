@@ -16,7 +16,7 @@ function getRemappings() {
 }
 
 const config: HardhatUserConfig = {
-  solidity: {compilers: [{version: "0.5.0"}, {version: "0.6.12"}, {version: "0.8.15"}]},
+  solidity: {compilers: [{version: "0.5.0"}, {version: "0.6.12", settings: {optimizer: {enabled: true}}}, {version: "0.8.15"}]},
   defaultNetwork: "wallaby",
   networks: {
     hardhat: {},
@@ -47,6 +47,7 @@ const config: HardhatUserConfig = {
     sources: "./src",
     cache: "./cache_hardhat",
     deploy: "./deploy",
+    deployments: "../deployments",
   },
   namedAccounts: {
     dev: {

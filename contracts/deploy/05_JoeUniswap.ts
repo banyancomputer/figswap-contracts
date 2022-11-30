@@ -28,16 +28,18 @@ const main = async ({
       delimeter: "_",
     });
 
-    const joefactory = await deployments.get("JoeFactory");
-    const joe = await deployments.get("JoeToken");
-    const wFIL = await deployments.get("WFIL");
+    const joefactory = (await deployments.get("JoeFactory")).address;
+    const joe = (await deployments.get("JoeToken")).address;
+    const wfil = (await deployments.get("WFIL")).address;
+    console.log(`joe: `, joe);
+    console.log(`wfil: `, wfil);
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
     const router = await deploy("JoeRouter02", {
       from: w.address,
-      args: [joefactory.address, wFIL.address],
+      args: [joefactory, wfil],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
       // a large gasLimit. This should be addressed in the following releases.
       gasLimit: 1000000000, // BlockGasLimit / 10
@@ -47,12 +49,13 @@ const main = async ({
       nonce,
       log: true,
     });
+
     console.log(`router address: ${router.address}`);
 
     const proxy = await deploy("Zap", {
       contract: "AdminUpgradeabilityProxy",
       from: w.address,
-      args: [joe.address, router.address],
+      args: [joe, router.address],
     });
 
     console.log(`zap proxy contract addr: ` + proxy.address);

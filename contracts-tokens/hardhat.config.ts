@@ -47,6 +47,7 @@ const config: HardhatUserConfig = {
     sources: "./src-tokens",
     cache: "./cache_hardhat",
     deploy: "./deploy",
+    deployments: "../deployments",
   },
 };
 
