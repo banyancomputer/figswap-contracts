@@ -140,7 +140,7 @@ contract SimpleRewarderPerSec is IRewarder, BoringOwnable, ReentrancyGuard {
         poolInfo = PoolInfo({lastRewardTimestamp: block.timestamp, accTokenPerShare: 0});
     }
 
-    /// @notice payable function needed to receive AVAX
+    /// @notice payable function needed to receive FIL
     receive() external payable {
         require(isNative, "Non native rewarder");
     }

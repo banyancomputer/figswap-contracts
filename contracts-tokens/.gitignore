@@ -31,3 +31,4 @@ cache
 cache_hardhat
 artifacts
 
+.DS_Store

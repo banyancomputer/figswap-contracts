@@ -54,6 +54,20 @@ const main = async ({
   });
   console.log(`Joe bar address: ${joebar.address}`);
 
+  const wFIL = await deploy("WFIL", {
+    from: w.address,
+    args: [],
+    // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+    // a large gasLimit. This should be addressed in the following releases.
+    gasLimit: 1000000000, // BlockGasLimit / 10
+    // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+    // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+    maxPriorityFeePerGas: priorityFee,
+    nonce,
+    log: true,
+  });
+  console.log(`wFIL address: ${wFIL.address}`);
+
   const cliff = await deploy("Cliff", {
       from: w.address,
       args: [joe.address, dev, 0, 3],
@@ -66,7 +80,7 @@ const main = async ({
       nonce,
       log: true,
   });
-  console.log(cliff);
+  console.log(`Cliff address: ${cliff.address}`);
 };
 
 main.tags = ["Cliff", "JoeTokens"];

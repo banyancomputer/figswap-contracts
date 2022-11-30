@@ -30,7 +30,7 @@ const main = async ({
     const joefactory = await deployments.get("JoeFactory");
     const bar = await deployments.get("JoeBar");
     const joe = await deployments.get("JoeToken");
-    const wFIL = await deployments.get("wFIL");
+    const wFIL = await deployments.get("WFIL");
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");

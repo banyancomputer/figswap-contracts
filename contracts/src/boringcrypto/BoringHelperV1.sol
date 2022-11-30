@@ -6,7 +6,7 @@
  * It needs flattened due to cyclic dependencies.
  * BoringHelperV1 has been modified by:
  *  - Renaming Sushi -> Joe
- *  - Renaming ETH -> AVAX
+ *  - Renaming ETH -> FIL
  *  - Removed bentobox/kashi logic.
  *
  */
@@ -515,7 +515,7 @@ contract BoringHelperV1 is Ownable {
     IMasterChef public chef; // IMasterChef(0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd);
     address public maker; // IJoeMaker(0xE11fc0B43ab98Eb91e9836129d1ee7c3Bc95df50);
     IERC20 public joe; // IJoeToken(0x6B3595068778DD592e39A122f4f5a5cF09C90fE2);
-    IERC20 public WAVAX; // 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    IERC20 public WFIL; // 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
     IFactory public joeFactory; // IFactory(0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac);
     IFactory public pangolinFactory; // IFactory(0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f);
     IERC20 public bar; // 0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272;
@@ -524,7 +524,7 @@ contract BoringHelperV1 is Ownable {
         IMasterChef chef_,
         address maker_,
         IERC20 joe_,
-        IERC20 WAVAX_,
+        IERC20 WFIL_,
         IFactory joeFactory_,
         IFactory pangolinFactory_,
         IERC20 bar_
@@ -532,7 +532,7 @@ contract BoringHelperV1 is Ownable {
         chef = chef_;
         maker = maker_;
         joe = joe_;
-        WAVAX = WAVAX;
+        WFIL = WFIL;
         joeFactory = joeFactory_;
         pangolinFactory = pangolinFactory_;
         bar = bar_;
@@ -542,7 +542,7 @@ contract BoringHelperV1 is Ownable {
         IMasterChef chef_,
         address maker_,
         IERC20 joe_,
-        IERC20 WAVAX_,
+        IERC20 WFIL_,
         IFactory joeFactory_,
         IFactory pangolinFactory_,
         IERC20 bar_
@@ -550,23 +550,23 @@ contract BoringHelperV1 is Ownable {
         chef = chef_;
         maker = maker_;
         joe = joe_;
-        WAVAX = WAVAX_;
+        WFIL = WFIL_;
         joeFactory = joeFactory_;
         pangolinFactory = pangolinFactory_;
         bar = bar_;
     }
 
-    function getAVAXRate(IERC20 token) public view returns (uint256) {
-        if (token == WAVAX) {
+    function getFILRate(IERC20 token) public view returns (uint256) {
+        if (token == WFIL) {
             return 1e18;
         }
         IPair pairPangolin;
         IPair pairJoe;
         if (pangolinFactory != IFactory(0)) {
-            pairPangolin = IPair(pangolinFactory.getPair(token, WAVAX));
+            pairPangolin = IPair(pangolinFactory.getPair(token, WFIL));
         }
         if (joeFactory != IFactory(0)) {
-            pairJoe = IPair(joeFactory.getPair(token, WAVAX));
+            pairJoe = IPair(joeFactory.getPair(token, WFIL));
         }
         if (address(pairPangolin) == address(0) && address(pairJoe) == address(0)) {
             return 0;
@@ -591,7 +591,7 @@ contract BoringHelperV1 is Ownable {
             }
         }
 
-        if (token0 == WAVAX) {
+        if (token0 == WFIL) {
             return (uint256(reserve1) * 1e18) / reserve0;
         } else {
             return (uint256(reserve0) * 1e18) / reserve1;
@@ -604,14 +604,14 @@ contract BoringHelperV1 is Ownable {
     }
 
     struct UIInfo {
-        uint256 avaxBalance;
+        uint256 FILBalance;
         uint256 joeBalance;
         uint256 joeBarBalance;
         uint256 xjoeBalance;
         uint256 xjoeSupply;
         uint256 joeBarAllowance;
         Factory[] factories;
-        uint256 avaxRate;
+        uint256 FILRate;
         uint256 joeRate;
         uint256 btcRate;
         uint256 pendingJoe;
@@ -625,7 +625,7 @@ contract BoringHelperV1 is Ownable {
         address[] calldata masterContracts
     ) public view returns (UIInfo memory) {
         UIInfo memory info;
-        info.avaxBalance = who.balance;
+        info.FILBalance = who.balance;
 
         info.factories = new Factory[](factoryAddresses.length);
         for (uint256 i = 0; i < factoryAddresses.length; i++) {
@@ -635,11 +635,11 @@ contract BoringHelperV1 is Ownable {
         }
 
         if (currency != IERC20(0)) {
-            info.avaxRate = getAVAXRate(currency);
+            info.FILRate = getFILRate(currency);
         }
 
         if (joe != IERC20(0)) {
-            info.joeRate = getAVAXRate(joe);
+            info.joeRate = getFILRate(joe);
             info.joeBalance = joe.balanceOf(who);
             info.joeBarBalance = joe.balanceOf(address(bar));
             info.joeBarAllowance = joe.allowance(who, address(bar));
@@ -723,7 +723,7 @@ contract BoringHelperV1 is Ownable {
             balances[i].token = token;
             balances[i].balance = token.balanceOf(who);
             balances[i].nonce = token.nonces(who);
-            balances[i].rate = getAVAXRate(token);
+            balances[i].rate = getFILRate(token);
         }
 
         return balances;

@@ -32,20 +32,6 @@ const main = async ({
   const nonce = await filRpc.request("MpoolGetNonce", f1addr);
   const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-  const wFIL = await deploy("WFIL", {
-    from: w.address,
-    args: [],
-    // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
-    // a large gasLimit. This should be addressed in the following releases.
-    gasLimit: 1000000000, // BlockGasLimit / 10
-    // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
-    // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
-    maxPriorityFeePerGas: priorityFee,
-    nonce,
-    log: true,
-  });
-  console.log(`wFIL address: ${wFIL.address}`);
-
   const usdc = await deploy("USDC", {
     from: w.address,
     args: [],

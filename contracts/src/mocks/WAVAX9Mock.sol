@@ -2,9 +2,9 @@
 
 pragma solidity 0.6.12;
 
-contract WAVAX9Mock {
-    string public name = "Wrapped Avax";
-    string public symbol = "WAVAX";
+contract WFIL9Mock {
+    string public name = "Wrapped FIL";
+    string public symbol = "WFIL";
     uint8 public decimals = 18;
 
     event Approval(address indexed src, address indexed guy, uint256 wad);
@@ -21,7 +21,7 @@ contract WAVAX9Mock {
     }
 
     function withdraw(uint256 wad) public {
-        require(balanceOf[msg.sender] >= wad, "WAVAX9: Error");
+        require(balanceOf[msg.sender] >= wad, "WFIL9: Error");
         balanceOf[msg.sender] -= wad;
         msg.sender.transfer(wad);
         emit Withdrawal(msg.sender, wad);
@@ -46,10 +46,10 @@ contract WAVAX9Mock {
         address dst,
         uint256 wad
     ) public returns (bool) {
-        require(balanceOf[src] >= wad, "WAVAX9: Error");
+        require(balanceOf[src] >= wad, "WFIL9: Error");
 
         if (src != msg.sender && allowance[src][msg.sender] != uint256(-1)) {
-            require(allowance[src][msg.sender] >= wad, "WAVAX9: Error");
+            require(allowance[src][msg.sender] >= wad, "WFIL9: Error");
             allowance[src][msg.sender] -= wad;
         }
 

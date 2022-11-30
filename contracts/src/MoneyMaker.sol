@@ -26,7 +26,7 @@ contract MoneyMaker is Ownable {
     IJoeFactory public immutable factory;
 
     address public immutable bar;
-    address private immutable wavax;
+    address private immutable wFIL;
     /// @notice Any ERC20
     address public tokenTo;
     /// @notice In basis points aka parts per 10,000 so 5000 is 50%, cap of 50%, default is 0
@@ -63,21 +63,21 @@ contract MoneyMaker is Ownable {
     /// @param _factory The address of JoeFactory
     /// @param _bar The address of JoeBar
     /// @param _tokenTo The address of the token we want to convert to
-    /// @param _wavax The address of wavax
+    /// @param _wFIL The address of wFIL
     constructor(
         address _factory,
         address _bar,
         address _tokenTo,
-        address _wavax
+        address _wFIL
     ) public {
         require(_factory != address(0), "MoneyMaker: factory can't be address(0)");
         require(_bar != address(0), "MoneyMaker: bar can't be address(0)");
         require(_tokenTo != address(0), "MoneyMaker: token can't be address(0)");
-        require(_wavax != address(0), "MoneyMaker: wavax can't be address(0)");
+        require(_wFIL != address(0), "MoneyMaker: wFIL can't be address(0)");
         factory = IJoeFactory(_factory);
         bar = _bar;
         tokenTo = _tokenTo;
-        wavax = _wavax;
+        wFIL = _wFIL;
         devAddr = _msgSender();
         _isAuth.add(_msgSender());
     }
@@ -114,7 +114,7 @@ contract MoneyMaker is Ownable {
     /// @param bridge The address of the tokenTo
     function setBridge(address token, address bridge) external onlyAuth {
         // Checks
-        require(token != tokenTo && token != wavax && token != bridge, "MoneyMaker: Invalid bridge");
+        require(token != tokenTo && token != wFIL && token != bridge, "MoneyMaker: Invalid bridge");
 
         // Effects
         address oldBridge = _bridges[token];
@@ -155,7 +155,7 @@ contract MoneyMaker is Ownable {
     function bridgeFor(address token) public view returns (address bridge) {
         bridge = _bridges[token];
         if (bridge == address(0)) {
-            bridge = wavax;
+            bridge = wFIL;
         }
     }
 
@@ -264,27 +264,27 @@ contract MoneyMaker is Ownable {
             if (token0 == tokenTo) {
                 IERC20(tokenTo).safeTransfer(bar, amount);
                 tokenOut = amount;
-            } else if (token0 == wavax) {
-                tokenOut = _toToken(wavax, amount, slippage);
+            } else if (token0 == wFIL) {
+                tokenOut = _toToken(wFIL, amount, slippage);
             } else {
                 address bridge = bridgeFor(token0);
                 amount = _swap(token0, bridge, amount, address(this), slippage);
                 tokenOut = _convertStep(bridge, bridge, amount, 0, slippage);
             }
         } else if (token0 == tokenTo) {
-            // eg. TOKEN - AVAX
+            // eg. TOKEN - FIL
             IERC20(tokenTo).safeTransfer(bar, amount0);
             tokenOut = _toToken(token1, amount1, slippage).add(amount0);
         } else if (token1 == tokenTo) {
             // eg. USDT - TOKEN
             IERC20(tokenTo).safeTransfer(bar, amount1);
             tokenOut = _toToken(token0, amount0, slippage).add(amount1);
-        } else if (token0 == wavax) {
-            // eg. AVAX - USDC
-            tokenOut = _toToken(wavax, _swap(token1, wavax, amount1, address(this), slippage).add(amount0), slippage);
-        } else if (token1 == wavax) {
-            // eg. USDT - AVAX
-            tokenOut = _toToken(wavax, _swap(token0, wavax, amount0, address(this), slippage).add(amount1), slippage);
+        } else if (token0 == wFIL) {
+            // eg. FIL - USDC
+            tokenOut = _toToken(wFIL, _swap(token1, wFIL, amount1, address(this), slippage).add(amount0), slippage);
+        } else if (token1 == wFIL) {
+            // eg. USDT - FIL
+            tokenOut = _toToken(wFIL, _swap(token0, wFIL, amount0, address(this), slippage).add(amount1), slippage);
         } else {
             // eg. MIC - USDT
             address bridge0 = bridgeFor(token0);

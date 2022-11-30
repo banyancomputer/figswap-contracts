@@ -2,7 +2,7 @@ import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 
 import RpcEngine from "@glif/filecoin-rpc-client";
-import fa, { newDelegatedEthAddress } from "@glif/filecoin-address";
+import fa from "@glif/filecoin-address";
 import { HttpNetworkConfig, HardhatRuntimeEnvironment } from "hardhat/types";
 
 const main = async ({
@@ -30,7 +30,7 @@ const main = async ({
 
     const joefactory = await deployments.get("JoeFactory");
     const joe = await deployments.get("JoeToken");
-    const wFIL = await deployments.get("wFIL");
+    const wFIL = await deployments.get("WFIL");
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
@@ -49,22 +49,14 @@ const main = async ({
     });
     console.log(`router address: ${router.address}`);
 
-    await deploy("Zap", {
-        from: w.address,
-        args: [],
-        // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
-        // a large gasLimit. This should be addressed in the following releases.
-        gasLimit: 1000000000, // BlockGasLimit / 10
-        // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
-        // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
-        maxPriorityFeePerGas: priorityFee,
-        nonce,
-        log: true,
-      });
+    const proxy = await deploy("Zap", {
+      contract: "AdminUpgradeabilityProxy",
+      from: w.address,
+      args: [joe.address, router.address],
+    });
 
-    const zap = await deployments.get("Zap");
-    await zap.initialize(joe.address, router.address);
-
-    console.log(`router contract addr: ` + router.address, newDelegatedEthAddress(router.address).toString());
+    console.log(`zap proxy contract addr: ` + proxy.address);
     
 };
+
+export default main;

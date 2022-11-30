@@ -13,7 +13,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "./traderjoe/interfaces/IJoePair.sol";
 import "./traderjoe/interfaces/IJoeRouter02.sol";
-import "./traderjoe/interfaces/IWAVAX.sol";
+import "./traderjoe/interfaces/IWFIL.sol";
 
 contract Zap is OwnableUpgradeable {
     using SafeMath for uint256;
@@ -24,7 +24,7 @@ contract Zap is OwnableUpgradeable {
     address public JOE;
     address public constant USDT = 0xde3A24028580884448a5397872046a019649b084;
     address public constant DAI = 0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a;
-    address public constant WAVAX = 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7;
+    address public constant WFIL = 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7;
 
     IJoeRouter02 private ROUTER;
 
@@ -42,7 +42,7 @@ contract Zap is OwnableUpgradeable {
 
         JOE = _joe;
         ROUTER = IJoeRouter02(_router);
-        setNotLP(WAVAX);
+        setNotLP(WFIL);
         setNotLP(USDT);
         setNotLP(JOE);
         setNotLP(DAI);
@@ -91,8 +91,8 @@ contract Zap is OwnableUpgradeable {
                     block.timestamp
                 );
             } else {
-                uint256 avaxAmount = _swapTokenForAVAX(_from, amount, address(this));
-                _swapAVAXToLP(_to, avaxAmount, msg.sender);
+                uint256 FILAmount = _swapTokenForFIL(_from, amount, address(this));
+                _swapFILToLP(_to, FILAmount, msg.sender);
             }
         } else {
             _swap(_from, amount, _to, msg.sender);
@@ -100,7 +100,7 @@ contract Zap is OwnableUpgradeable {
     }
 
     function zapIn(address _to) external payable {
-        _swapAVAXToLP(_to, msg.value, msg.sender);
+        _swapFILToLP(_to, msg.value, msg.sender);
     }
 
     function zapOut(address _from, uint256 amount) external {
@@ -108,14 +108,14 @@ contract Zap is OwnableUpgradeable {
         _approveTokenIfNeeded(_from);
 
         if (!isLP(_from)) {
-            _swapTokenForAVAX(_from, amount, msg.sender);
+            _swapTokenForFIL(_from, amount, msg.sender);
         } else {
             IJoePair pair = IJoePair(_from);
             address token0 = pair.token0();
             address token1 = pair.token1();
-            if (token0 == WAVAX || token1 == WAVAX) {
-                ROUTER.removeLiquidityAVAX(
-                    token0 != WAVAX ? token0 : token1,
+            if (token0 == WFIL || token1 == WFIL) {
+                ROUTER.removeLiquidityFIL(
+                    token0 != WFIL ? token0 : token1,
                     amount,
                     0,
                     0,
@@ -136,25 +136,25 @@ contract Zap is OwnableUpgradeable {
         }
     }
 
-    function _swapAVAXToLP(
+    function _swapFILToLP(
         address lp,
         uint256 amount,
         address receiver
     ) private {
         if (!isLP(lp)) {
-            _swapAVAXForToken(lp, amount, receiver);
+            _swapFILForToken(lp, amount, receiver);
         } else {
             // lp
             IJoePair pair = IJoePair(lp);
             address token0 = pair.token0();
             address token1 = pair.token1();
-            if (token0 == WAVAX || token1 == WAVAX) {
-                address token = token0 == WAVAX ? token1 : token0;
+            if (token0 == WFIL || token1 == WFIL) {
+                address token = token0 == WFIL ? token1 : token0;
                 uint256 swapValue = amount.div(2);
-                uint256 tokenAmount = _swapAVAXForToken(token, swapValue, address(this));
+                uint256 tokenAmount = _swapFILForToken(token, swapValue, address(this));
 
                 _approveTokenIfNeeded(token);
-                ROUTER.addLiquidityAVAX{value: amount.sub(swapValue)}(
+                ROUTER.addLiquidityFIL{value: amount.sub(swapValue)}(
                     token,
                     tokenAmount,
                     0,
@@ -164,8 +164,8 @@ contract Zap is OwnableUpgradeable {
                 );
             } else {
                 uint256 swapValue = amount.div(2);
-                uint256 token0Amount = _swapAVAXForToken(token0, swapValue, address(this));
-                uint256 token1Amount = _swapAVAXForToken(token1, amount.sub(swapValue), address(this));
+                uint256 token0Amount = _swapFILForToken(token0, swapValue, address(this));
+                uint256 token1Amount = _swapFILForToken(token1, amount.sub(swapValue), address(this));
 
                 _approveTokenIfNeeded(token0);
                 _approveTokenIfNeeded(token1);
@@ -174,7 +174,7 @@ contract Zap is OwnableUpgradeable {
         }
     }
 
-    function _swapAVAXForToken(
+    function _swapFILForToken(
         address token,
         uint256 value,
         address receiver
@@ -183,20 +183,20 @@ contract Zap is OwnableUpgradeable {
 
         if (routePairAddresses[token] != address(0)) {
             path = new address[](3);
-            path[0] = WAVAX;
+            path[0] = WFIL;
             path[1] = routePairAddresses[token];
             path[2] = token;
         } else {
             path = new address[](2);
-            path[0] = WAVAX;
+            path[0] = WFIL;
             path[1] = token;
         }
 
-        uint256[] memory amounts = ROUTER.swapExactAVAXForTokens{value: value}(0, path, receiver, block.timestamp);
+        uint256[] memory amounts = ROUTER.swapExactFILForTokens{value: value}(0, path, receiver, block.timestamp);
         return amounts[amounts.length - 1];
     }
 
-    function _swapTokenForAVAX(
+    function _swapTokenForFIL(
         address token,
         uint256 amount,
         address receiver
@@ -206,14 +206,14 @@ contract Zap is OwnableUpgradeable {
             path = new address[](3);
             path[0] = token;
             path[1] = routePairAddresses[token];
-            path[2] = WAVAX;
+            path[2] = WFIL;
         } else {
             path = new address[](2);
             path[0] = token;
-            path[1] = WAVAX;
+            path[1] = WFIL;
         }
 
-        uint256[] memory amounts = ROUTER.swapExactTokensForAVAX(amount, 0, path, receiver, block.timestamp);
+        uint256[] memory amounts = ROUTER.swapExactTokensForFIL(amount, 0, path, receiver, block.timestamp);
         return amounts[amounts.length - 1];
     }
 
@@ -229,8 +229,8 @@ contract Zap is OwnableUpgradeable {
         }
 
         address[] memory path;
-        if (intermediate != address(0) && (_from == WAVAX || _to == WAVAX)) {
-            // [WAVAX, BUSD, VAI] or [VAI, BUSD, WAVAX]
+        if (intermediate != address(0) && (_from == WFIL || _to == WFIL)) {
+            // [WFIL, BUSD, VAI] or [VAI, BUSD, WFIL]
             path = new address[](3);
             path[0] = _from;
             path[1] = intermediate;
@@ -252,29 +252,29 @@ contract Zap is OwnableUpgradeable {
             routePairAddresses[_from] != routePairAddresses[_to]
         ) {
             // routePairAddresses[xToken] = xRoute
-            // [VAI, BUSD, WAVAX, xRoute, xToken]
+            // [VAI, BUSD, WFIL, xRoute, xToken]
             path = new address[](5);
             path[0] = _from;
             path[1] = routePairAddresses[_from];
-            path[2] = WAVAX;
+            path[2] = WFIL;
             path[3] = routePairAddresses[_to];
             path[4] = _to;
         } else if (intermediate != address(0) && routePairAddresses[_from] != address(0)) {
-            // [VAI, BUSD, WAVAX, BUNNY]
+            // [VAI, BUSD, WFIL, BUNNY]
             path = new address[](4);
             path[0] = _from;
             path[1] = intermediate;
-            path[2] = WAVAX;
+            path[2] = WFIL;
             path[3] = _to;
         } else if (intermediate != address(0) && routePairAddresses[_to] != address(0)) {
-            // [BUNNY, WAVAX, BUSD, VAI]
+            // [BUNNY, WFIL, BUSD, VAI]
             path = new address[](4);
             path[0] = _from;
-            path[1] = WAVAX;
+            path[1] = WFIL;
             path[2] = intermediate;
             path[3] = _to;
-        } else if (_from == WAVAX || _to == WAVAX) {
-            // [WAVAX, BUNNY] or [BUNNY, WAVAX]
+        } else if (_from == WFIL || _to == WFIL) {
+            // [WFIL, BUNNY] or [BUNNY, WFIL]
             path = new address[](2);
             path[0] = _from;
             path[1] = _to;
@@ -282,7 +282,7 @@ contract Zap is OwnableUpgradeable {
             // [USDT, BUNNY] or [BUNNY, USDT]
             path = new address[](3);
             path[0] = _from;
-            path[1] = WAVAX;
+            path[1] = WFIL;
             path[2] = _to;
         }
 
@@ -317,10 +317,10 @@ contract Zap is OwnableUpgradeable {
             if (token == address(0)) continue;
             uint256 amount = IERC20(token).balanceOf(address(this));
             if (amount > 0) {
-                if (token == WAVAX) {
-                    IWAVAX(token).withdraw(amount);
+                if (token == WFIL) {
+                    IWFIL(token).withdraw(amount);
                 } else {
-                    _swapTokenForAVAX(token, amount, owner());
+                    _swapTokenForFIL(token, amount, owner());
                 }
             }
         }

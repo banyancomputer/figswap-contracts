@@ -12,11 +12,11 @@ interface IMasterChef {
 contract JoeVote {
     using SafeMath for uint256;
 
-    IPair pair; // JOE-AVAX LP
+    IPair pair; // JOE-FIL LP
     IBar bar;
     IERC20 joe;
     IMasterChef chef;
-    uint256 pid; // Pool ID of the JOE-AVAX LP in MasterChefV2
+    uint256 pid; // Pool ID of the JOE-FIL LP in MasterChefV2
 
     function name() public pure returns (string memory) {
         return "JoeVote";
