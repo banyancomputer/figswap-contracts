@@ -52,13 +52,18 @@ const main = async ({
 
     console.log(`router address: ${router.address}`);
 
-    const proxy = await deploy("Zap", {
-      contract: "AdminUpgradeabilityProxy",
+    await deploy("Zap", {
       from: w.address,
-      args: [joe, router.address],
+      args: [],
+      gasLimit: 1000000000,
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
     });
 
-    console.log(`zap proxy contract addr: ` + proxy.address);
+    const Zap = await ethers.getContractFactory("Zap")
+    const zap = Zap.attach(w.address)
+    await zap.initialize(joe, router.address);
     
 };
 
