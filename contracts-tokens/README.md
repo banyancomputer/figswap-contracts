@@ -18,6 +18,14 @@ cd figswap-contracts
 npm i
 ```
 
+Then, do
+
+```
+npx hardhat deploy
+```
+
+Repeat this next on the contracts folder, and (in the future) on the contracts-staking folder.
+
 ## Testing your contracts with forge
 
 `forge test`
