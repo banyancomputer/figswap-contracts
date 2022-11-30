@@ -52,18 +52,29 @@ const main = async ({
 
     console.log(`router address: ${router.address}`);
 
-    await deploy("Zap", {
+    const zap = await deploy("Zap", {
       from: w.address,
-      args: [],
-      gasLimit: 1000000000,
+      proxy: {
+        owner: w.address,
+        proxyContract: "OpenZeppelinTransparentProxy",
+        viaAdminContract: "DefaultProxyAdmin",
+        execute: {
+          init: {
+            methodName: "initialize",
+            args: [joe, router.address],
+          },
+        },
+      },
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
       maxPriorityFeePerGas: priorityFee,
       nonce,
       log: true,
     });
-
-    const Zap = await ethers.getContractFactory("Zap")
-    const zap = Zap.attach(w.address)
-    await zap.initialize(joe, router.address);
+    console.log(`Zap address: ${zap.address}`);
     
 };
 
