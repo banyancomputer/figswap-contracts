@@ -3,7 +3,7 @@ import { HardhatUserConfig } from "hardhat/config";
 import "hardhat-preprocessor";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
-import "../tasks";
+import "./tasks";
 
 require("dotenv").config();
 

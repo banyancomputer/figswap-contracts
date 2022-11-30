@@ -34,7 +34,25 @@ const main = async ({
   const nonce = await filRpc.request("MpoolGetNonce", f1addr);
   const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-  const joe = await deployments.get("JoeToken");
+  const joe = await deploy("JoeToken", {
+    from: w.address,
+    args: [],
+    gasLimit: 1000000000,
+    maxPriorityFeePerGas: priorityFee,
+    nonce,
+    log: true,
+  });
+  console.log(`joe address: ${joe.address}`);
+
+  const joebar = await deploy("JoeBar", {
+    from: w.address,
+    args: [joe.address],
+    gasLimit: 1000000000,
+    maxPriorityFeePerGas: priorityFee,
+    nonce,
+    log: true,
+  });
+  console.log(`Joe bar address: ${joebar.address}`);
 
   const cliff = await deploy("Cliff", {
       from: w.address,
@@ -51,7 +69,7 @@ const main = async ({
   console.log(cliff);
 };
 
-main.tags = ["Cliff"];
+main.tags = ["Cliff", "JoeTokens"];
 main.dependencies = ["Figswap Tokens"];
 
 export default main;

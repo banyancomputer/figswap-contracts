@@ -4,9 +4,10 @@ import { WFIL } from "../typechain-types";
 declare var task: any;
 declare var ethers: typeof Ethers;
 
-task("name", "Gets the name of the WFIL token")
+task("balanceOf", "Gets the wfil balance of the address passed")
+  .addParam("actor", "The address of the account to query")
   .addParam("contract", "The address the WFIL contract")
-  .setAction(async (taskArgs: { contract: string }) => {
+  .setAction(async (taskArgs: { contract: string; actor: string }) => {
     try {
       const [signer] = await ethers.getSigners();
       const WFIL = await ethers.getContractFactory("WFIL");
@@ -16,8 +17,8 @@ task("name", "Gets the name of the WFIL token")
         signer
       ) as WFIL;
 
-      const name = await contract.name();
-      console.log("Name: ", name);
+      const bal = await contract.balanceOf(taskArgs.actor);
+      console.log("balance: ", ethers.utils.formatEther(bal));
     } catch (err) {
       const msg = err instanceof Error ? err.message : JSON.stringify(err);
       console.error(`Error when fetching name from wfil contract: ${msg}`);

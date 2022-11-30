@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.15;
+pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 // JoeBar is the coolest bar in town. You come in with some Joe, and leave with more! The longer you stay, the more Joe you get.
 //

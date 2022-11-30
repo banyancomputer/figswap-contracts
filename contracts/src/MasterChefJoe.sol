@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "../src-tokens/JoeToken.sol";
+import "./JoeToken.sol";
 
 // MasterChefJoe is a boss. He says "go f your blocks lego boy, I'm gonna use timestamp instead".
 // And to top it off, it takes no risks. Because the biggest risk is operator error.

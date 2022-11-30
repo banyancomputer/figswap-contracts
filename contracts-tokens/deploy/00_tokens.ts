@@ -56,16 +56,6 @@ const main = async ({
   });
   console.log(`usdc address: ${usdc.address}`);
 
-  const joe = await deploy("JoeToken", {
-    from: w.address,
-    args: [],
-    gasLimit: 1000000000,
-    maxPriorityFeePerGas: priorityFee,
-    nonce,
-    log: true,
-  });
-  console.log(`joe address: ${joe.address}`);
-
   const vejoe = await deploy("VeJoeToken", {
     from: w.address,
     args: [],
@@ -95,16 +85,6 @@ const main = async ({
     log: true,
   });
   console.log(`Joe address: ${multicall.address}`);
-    
-  const joebar = await deploy("JoeBar", {
-    from: w.address,
-    args: [joe.address],
-    gasLimit: 1000000000,
-    maxPriorityFeePerGas: priorityFee,
-    nonce,
-    log: true,
-  });
-  console.log(`Joe bar address: ${joebar.address}`);
   
   const joehat = await deploy("JoeHatToken", {
     from: w.address,
