@@ -50,16 +50,20 @@ const config: HardhatUserConfig = {
     deployments: "../deployments",
   },
   namedAccounts: {
+    deployer: {
+      default: 0,
+    },
     dev: {
-      default: 0
+      // Default to 1
+      default: 0,
     },
     treasury: {
-      default: 1
+      default: 0,
     },
     investor: {
-      default: 2
-    }
-  }
+      default: 0,
+    },
+  },
 };
 
 export default config;
