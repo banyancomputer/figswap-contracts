@@ -34,7 +34,7 @@ const main = async ({
 
   const usdc = await deploy("USDC", {
     from: w.address,
-    args: [],
+    args: [w.address],
     gasLimit: 1000000000,
     maxPriorityFeePerGas: priorityFee,
     nonce,
@@ -75,6 +75,16 @@ const main = async ({
   const joehat = await deploy("JoeHatToken", {
     from: w.address,
     args: [w.address],
+    gasLimit: 1000000000,
+    maxPriorityFeePerGas: priorityFee,
+    nonce,
+    log: true,
+  });
+  console.log(`Joe hat address: ${joehat.address}`);
+
+  const balancefetcher = await deploy("BalanceFetcher", {
+    from: w.address,
+    args: [],
     gasLimit: 1000000000,
     maxPriorityFeePerGas: priorityFee,
     nonce,

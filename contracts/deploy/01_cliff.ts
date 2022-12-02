@@ -81,6 +81,7 @@ const main = async ({
       log: true,
   });
   console.log(`Cliff address: ${cliff.address}`);
+
 };
 
 main.tags = ["Cliff", "JoeTokens"];

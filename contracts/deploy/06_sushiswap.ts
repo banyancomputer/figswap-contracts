@@ -31,20 +31,30 @@ const main = async ({
     const joefactory = (await deployments.get("JoeFactory")).address;
     const joe = (await deployments.get("JoeToken")).address;
     const wfil = (await deployments.get("WFIL")).address;
-    const maker = (await deployments.get("JoeMaker")).address;
-    const chef = (await deployments.get("MasterChefJoeV2")).address;
-    const bar = (await deployments.get("JoeBar")).address;
     const unifactory = (await deployments.get("UniswapV2Factory")).address;
-
     console.log(`joe: `, joe);
     console.log(`wfil: `, wfil);
 
     const nonce = await filRpc.request("MpoolGetNonce", f1addr);
     const priorityFee = await ethRpc.request("maxPriorityFeePerGas");
 
-    const router = await deploy("JoeRouter02", {
+    const box = await deploy("BentoboxV1", {
       from: w.address,
-      args: [joefactory, wfil],
+      args: [wfil],
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
+      gasLimit: 1000000000, // BlockGasLimit / 10
+      // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
+      // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
+      maxPriorityFeePerGas: priorityFee,
+      nonce,
+      log: true,
+    });
+    console.log(`box: ${box.address}`);
+
+    const swapper = await deploy("SushiSwapSwapperV1", {
+      from: w.address,
+      args: [box.address, unifactory],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
       // a large gasLimit. This should be addressed in the following releases.
       gasLimit: 1000000000, // BlockGasLimit / 10
@@ -55,21 +65,11 @@ const main = async ({
       log: true,
     });
 
-    console.log(`router address: ${router.address}`);
+    console.log(`router address: ${swapper.address}`);
 
-    const zap = await deploy("Zap", {
+    const multiswapper = await deploy("SushiSwapMultiSwapper", {
       from: w.address,
-      proxy: {
-        owner: w.address,
-        proxyContract: "OpenZeppelinTransparentProxy",
-        viaAdminContract: "DefaultProxyAdmin",
-        execute: {
-          init: {
-            methodName: "initialize",
-            args: [joe, router.address],
-          },
-        },
-      },
+      args: [box.address, unifactory],
       // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
       // a large gasLimit. This should be addressed in the following releases.
       gasLimit: 1000000000, // BlockGasLimit / 10
@@ -79,19 +79,14 @@ const main = async ({
       nonce,
       log: true,
     });
-    console.log(`Zap address: ${zap.address}`);
 
-    const helper = await deploy("BoringHelperV1", {
+    console.log(`router address: ${multiswapper.address}`);
+
+    const exactswapper = await deploy("SushiSwapExactSwapper", {
       from: w.address,
-      args: [
-        chef,
-        maker,
-        joe,
-        wfil,
-        joefactory,
-        unifactory,
-        bar,
-      ],
+      args: [box.address, unifactory],
+      // since it's difficult to estimate the gas limit before f4 address is launched, it's safer to manually set
+      // a large gasLimit. This should be addressed in the following releases.
       gasLimit: 1000000000, // BlockGasLimit / 10
       // since Ethereum's legacy transaction format is not supported on FVM, we need to specify
       // maxPriorityFeePerGas to instruct hardhat to use EIP-1559 tx format
@@ -99,7 +94,8 @@ const main = async ({
       nonce,
       log: true,
     });
-    console.log(`Helper address : ${helper.address}`)
+
+    console.log(`router address: ${exactswapper.address}`);
     
 };
 
