@@ -34,7 +34,7 @@ const main = async ({
 
   const usdc = await deploy("USDC", {
     from: w.address,
-    args: [],
+    args: [w.address],
     gasLimit: 1000000000,
     maxPriorityFeePerGas: priorityFee,
     nonce,
